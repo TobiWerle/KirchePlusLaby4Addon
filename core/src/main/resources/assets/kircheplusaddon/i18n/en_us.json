@@ -1,0 +1,51 @@
+{
+  "kircheplusaddon": {
+    "settings": {
+        "name": "KirchePlus Addon",
+        "enabled": {
+            "name": "Enabled"
+        },
+        "hv": {
+            "name": "Houseban Settings",
+            "hvenable": {
+                "name": "Houseban enable"
+            },
+            "hvprefix": {
+                "name": "Houseban prefix"
+            }
+        },
+        "bread": {
+            "name": "Breadlist Settings",
+            "breadenable": {
+                "name": "Breadlist enable"
+            },
+            "breadprefix": {
+                "name": "Breadlist prefix"
+            }
+        },
+        "drink": {
+            "name": "Drink Settings",
+            "drinkmessageenable": {
+                "name": "Drink message enable"
+            },
+            "drinksoundenable": {
+                "name": "Drink Sound enable"
+            }
+        },
+        "uploadtype": {
+            "name": "Uploadtype"
+        },
+        "owngmailenabled": {
+            "name": "OwnGmail enable"
+        },
+        "kircheplustoken": {
+            "name": "Upload Token"
+        },
+        "header" : {
+            "addonsettings": {
+                "name" : "Addon Settings"
+            }
+        }
+    }
+  }
+}
