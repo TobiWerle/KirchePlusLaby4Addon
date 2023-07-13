@@ -20,9 +20,7 @@ public class UpdateCheck {
     public void onWorldJoin(WorldEnterEvent e) {
         if (!sended && !updateStatus) {
             sended = true;
-            Utils.displayMessageLater(
-                "§8[§6Kirche-Plus§8] §eEs wurde ein Update gefunden. Lade dir dieses auf der KirchePlus-Mod Website herunter!",
-                5);
+            KirchePlus.main.utils.displayMessageLater("§8[§6Kirche-Plus§8] §eEs wurde ein Update gefunden. Lade dir dieses auf der KirchePlus-Mod Website herunter!", 5);
         }
     }
 
@@ -31,15 +29,14 @@ public class UpdateCheck {
             if (!KirchePlus.main.VERSION.equals(getVersion())) {
                 updateStatus = false;
             }
-        } catch (Exception e) {
-            System.err.println("Es ist ein Fehler beim abfragen der neusten Version aufgetreten.");
+        } catch (Exception ignored) {
         }
     }
 
     private static String getVersion() throws IOException {
         URL url = new URL("https://kircheplus-mod.de/api/version.txt");
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-        con.setSSLSocketFactory(Utils.socketFactory());
+        con.setSSLSocketFactory(KirchePlus.main.utils.socketFactory());
 
         BufferedReader bufferedReader = new BufferedReader(
             new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));

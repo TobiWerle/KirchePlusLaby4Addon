@@ -4,6 +4,7 @@ import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.models.addon.annotation.AddonMain;
+import uc.kircheplus.automaticactivity.ActivityGUI;
 import uc.kircheplus.commands.VertragsInfo_Command;
 import uc.kircheplus.commands.aEquip;
 import uc.kircheplus.events.TabCompletionListener;
@@ -17,6 +18,7 @@ import uc.kircheplus.config.config;
 import uc.kircheplus.core.generated.DefaultReferenceStorage;
 import uc.kircheplus.events.Displayname;
 import uc.kircheplus.events.PrefixHandler;
+import uc.kircheplus.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,9 @@ public class KirchePlus extends LabyAddon<config> {
     /* Versioned Classes */
     public Displayname displaynameClass;
     public GUIController guiController;
+
+    public Utils utils;
+    public ActivityGUI activityGUI;
     @Override
     protected void enable() {
         main = this;
@@ -45,7 +50,10 @@ public class KirchePlus extends LabyAddon<config> {
         DefaultReferenceStorage referenceStorage = this.referenceStorageAccessor();
         displaynameClass = referenceStorage.displayname();
         guiController = referenceStorage.guiController();
-        displaynameClass.checkHide();
+        utils = referenceStorage.utils();
+        activityGUI = referenceStorage.activityGUI();
+
+
 
         registerEvents();
         registerCommands();

@@ -83,7 +83,7 @@ public class VersionedDisplayname extends Displayname {
   @Override
   public void checkHide(){
       if(!Laby.labyAPI().minecraft().isIngame()){
-          System.out.println("Nicht Ingame");
+          return;
       }
     if(reloadTime != 0){
       reloadTime--;

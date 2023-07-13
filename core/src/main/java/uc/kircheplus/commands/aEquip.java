@@ -4,6 +4,7 @@ import net.labymod.api.Laby;
 import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.event.Event;
 import net.labymod.api.event.Subscribe;
+import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.gui.screen.ScreenDisplayEvent;
 import net.labymod.api.event.client.gui.screen.ScreenOpenEvent;
 import org.jetbrains.annotations.NotNull;
@@ -97,16 +98,14 @@ public class aEquip extends Command {
         return tabs;
     }
 
-
-    /*@Subscribe
-    public void onGuiOpenEvent(ScreenDisplayEvent e){
+    @Subscribe
+    public void onChatReceived(ChatReceiveEvent e){
         if(!enabled)return;
-        System.out.println("Inventar geöffnet!");
-        if(amount != 0){
-            equip();
-            amount--;
+        String msg = e.message().toString();
+        if(msg.contains("Du bist nicht am Equip-Punkt deiner Fraktion.")){
+            enabled = false;
         }
-    }*/
+    }
 
     private static void equip(){
         Thread thread = new Thread(() -> {

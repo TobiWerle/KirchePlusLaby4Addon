@@ -33,7 +33,7 @@ public class VertragsInfo_Command extends Command {
         if(args.length == 1){
             if(args[0].equalsIgnoreCase("info")){
 
-                Utils.displayMessage("§3 =============Verträge=============");
+                displayMessage("§3 =============Verträge=============");
                 for(FactionContract factionContract : KirchePlus.main.FactionContracs){
                     String name = factionContract.getFaction();
                     String contract = "§4✖";
@@ -54,12 +54,12 @@ public class VertragsInfo_Command extends Command {
                     if(factionContract.isContract()) contract = "§a✔";
                     String[] conditions = factionContract.getConditions();
 
-                    Utils.displayMessage("§3 =============Verträge=============");
+                    displayMessage("§3 =============Verträge=============");
                     displayMessage(" "+ name);
                     displayMessage("§5   Vertrag: "+contract);
                     if(conditions == null ) displayMessage("§f   Konditionen: §cKeine");
                     if(conditions != null ) for(String conditionsString : conditions) displayMessage("§f    "+conditionsString);
-                    Utils.displayMessage("§3 ====================================");
+                    displayMessage("§3 ====================================");
                     return false;
                 }
             }
@@ -105,7 +105,7 @@ public class VertragsInfo_Command extends Command {
         String jsonUrl = "https://kircheplus-mod.de/api/factioncontract.json"; // Die URL der JSON-Datei hier eintragen
 
         try {
-            SSLSocketFactory socketFactory = Utils.socketFactory();
+            SSLSocketFactory socketFactory = KirchePlus.main.utils.socketFactory();
             URL url = new URL(jsonUrl);
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setSSLSocketFactory(socketFactory);
