@@ -29,6 +29,9 @@ public class VersionedGUI extends GuiScreen {
     private GuiTextField textField;
     private GuiTextField textFieldAmount;
 
+    public VersionedGUI() {
+    }
+
     @Override
     public boolean doesGuiPauseGame() {
         return false;
@@ -37,15 +40,17 @@ public class VersionedGUI extends GuiScreen {
     @Override
     public void initGui() {
         addButtons();
-        textField = new GuiTextField(100, fontRenderer, width / 2 - 50, height / 2 - 66, 100, 20);
+        textField = new GuiTextField(100, fontRenderer
+            , width / 2 - 50, height / 2 - 66, 100,
+            20);
         textField.setText("");
         textField.setFocused(true);
         textField.setEnabled(true);
         textField.setCanLoseFocus(true);
         textField.setVisible(false);
 
-
-        textFieldAmount = new GuiTextField(101, fontRenderer, width / 2 - 50, height / 2 - 33, 100,
+        textFieldAmount = new GuiTextField(101, fontRenderer
+            , width / 2 - 50, height / 2 - 33, 100,
             20);
         textFieldAmount.setText("");
         textFieldAmount.setFocused(false);
@@ -71,7 +76,13 @@ public class VersionedGUI extends GuiScreen {
         drawRect(width / 2 - 58, height / 2 - 103, width / 2 + 58, height / 2 + 59, 0xa6c0c0c0);
         drawRect(width / 2 - 55, height / 2 - 100, width / 2 + 55, height / 2 + 56, 0x4ddcf527);
         fontRenderer.drawString("Aktivitäten", width / 2 - 25, height / 2 - 112, 0xd943ff64);
+
+        textField.setVisible(false);
+        System.out.println(textField.getVisible());
         textField.drawTextBox();
+        textField.setVisible(false);
+        System.out.println(textField.getVisible());
+
         textFieldAmount.drawTextBox();
 
 

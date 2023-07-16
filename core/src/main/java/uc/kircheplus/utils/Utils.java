@@ -7,6 +7,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
@@ -28,5 +30,9 @@ public abstract class Utils {
     }
     public boolean isOnline(String Playername) {
         return false;
+    }
+
+    public BufferedImage makeScreen() throws IOException {
+        return null;
     }
 }

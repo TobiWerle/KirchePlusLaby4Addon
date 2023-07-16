@@ -2,14 +2,19 @@ package uc.kircheplus.v1_12_2.utils;
 
 import net.labymod.api.models.Implements;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ScreenShotHelper;
 import uc.kircheplus.KirchePlus;
 import uc.kircheplus.utils.Utils;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
@@ -70,5 +75,15 @@ public class VersionedUtils extends Utils {
         }
         return false;
     }
+    public BufferedImage makeScreen() throws IOException {
+        File file1 = new File(Minecraft.getMinecraft().gameDir, "Kirche+");
+        file1.mkdir();
+        BufferedImage bufferedimage = ScreenShotHelper.createScreenshot(
+            Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer());
+        File file2 = new File(file1, "lastActivity.jpg");
+        file2 = file2.getCanonicalFile();
+        ImageIO.write(bufferedimage, "jpg", file2);
 
+        return bufferedimage;
+    }
 }

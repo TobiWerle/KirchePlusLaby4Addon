@@ -2,6 +2,12 @@ package uc.kircheplus.automaticactivity;
 
 
 
+import net.labymod.api.Laby;
+import net.labymod.api.client.Minecraft;
+import uc.kircheplus.KirchePlus;
+import uc.kircheplus.automaticactivity.Imgur.Imgur;
+import uc.kircheplus.automaticactivity.KirchePlusIMG.KirchePlusIMG_API;
+import uc.kircheplus.config.uploadTypes;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -132,35 +138,20 @@ public class Handler {
 
     }*/
 
-
-    public BufferedImage makeScreen() throws IOException {
-        /*File file1 = new File(Minecraft.getMinecraft().mcDataDir, "Kirche+");
-        file1.mkdir();
-        BufferedImage bufferedimage = ScreenShotHelper.createScreenshot(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer());
-        File file2 = new File(file1, "lastActivity.jpg");
-        file2 = file2.getCanonicalFile();
-        net.minecraftforge.client.event.ScreenshotEvent event = net.minecraftforge.client.ForgeHooksClient.onScreenshot(bufferedimage, file2);
-        ImageIO.write(bufferedimage, "jpg", file2);
-
-        return bufferedimage;*/
-        return null;
-    }
-
     public static String screenshot(BufferedImage image) throws IOException {
-        /*File file = new File(System.getenv("APPDATA") + "/.minecraft/Kirche+/lastActivity.jpg");
+        File file = new File(System.getenv("APPDATA") + "/.minecraft/Kirche+/lastActivity.jpg");
         ImageIO.write(addTextWatermark(image), "jpg", file);
 
-        if(KircheConfig.uploadType == uploadTypes.KIRCHEPLUSIMG){
+        if(KirchePlus.main.configuration().uploadtype().get() == uploadTypes.KIRCHEPLUSIMG){
             return KirchePlusIMG_API.uploadIMG(file);
         }
 
-        return Imgur.uploadToLink(file);*/
-        return null;
+        return Imgur.uploadToLink(file);
     }
 
 
     static BufferedImage addTextWatermark(BufferedImage image) {
-        /*DateTimeFormatter date = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
         LocalDateTime now = LocalDateTime.now();
         Graphics2D g2d = (Graphics2D) image.getGraphics();
         AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f);
@@ -174,14 +165,13 @@ public class Handler {
         int centerY = image.getHeight() / 2;
 
         g2d.drawString(date.format(now), centerX, centerY-100);
-        g2d.drawString(Minecraft.getMinecraft().player.getName(), centerX, centerY-50);
+        g2d.drawString(Laby.labyAPI().minecraft().getClientPlayer().getName(), centerX, centerY-50);
         if(isDonation){
             g2d.drawString(+amount + "$", centerX, centerY);
         }
         g2d.dispose();
-        return image;*/
+        return image;
         //thanks to codejava.net
-        return null;
     }
 
     public static boolean openGUI = false;
