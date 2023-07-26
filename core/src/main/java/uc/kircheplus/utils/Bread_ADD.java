@@ -3,13 +3,11 @@ package uc.kircheplus.utils;
 import com.google.api.services.sheets.v4.model.BatchGetValuesResponse;
 import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
-import net.labymod.api.util.Color;
-import uc.kircheplus.KirchePlus;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import uc.kircheplus.KirchePlus;
 
 public class Bread_ADD {
 
@@ -18,7 +16,7 @@ public class Bread_ADD {
     public static String Member = null;
     public static String Who = null;
 
-    static String Bread_prefix = Color.GRAY + "[" + Color.YELLOW + "Brot" + Color.GRAY + "]";
+    static String Bread_prefix = "§7[§eBrot§7]";
 
 
     public static void writeBread() {
@@ -28,9 +26,7 @@ public class Bread_ADD {
                 try {
                     ValueRange valueRange = getSpace(getRanges());
                     if (valueRange == null) {
-
-                        KirchePlus.main.displayMessage(Bread_prefix + Color.RED
-                            + "Es wurde nicht genug Platz in der Brot-Tabelle gefunden!");
+                        KirchePlus.main.displayMessage(Bread_prefix + " " +Utils.translateAsString("kircheplusaddon.commands.brot.add.error.nospace"));
                         return;
                     }
                     List<List<Object>> values = Arrays.asList(Arrays.asList(Member, Who, Date));
@@ -40,18 +36,16 @@ public class Bread_ADD {
                         .values().update(TabellenMethoden.SPREADSHEET_ID, range, body)
                         .setValueInputOption("USER_ENTERED").execute();
 
-                    KirchePlus.main.displayMessage(
-                        Bread_prefix + Color.GREEN + " Der Spieler wurde eingetragen!");
+                    KirchePlus.main.displayMessage(Bread_prefix + " " +Utils.translateAsString("kircheplusaddon.commands.brot.add.success"));
                     Brot_User user = new Brot_User(Member, Who, Date);
                     Who = null;
                     Date = null;
                     Member = null;
-                    KirchePlus.main.displaynameClass.refreshAll();
+                    KirchePlus.main.displayname.refreshAll();
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (e.getMessage().contains("400 Bad Request")) {
-                        KirchePlus.main.displayMessage(
-                            Bread_prefix + Color.RED + "Du hast keine Rechte auf die Brot-Tabelle");
+                        KirchePlus.main.displayMessage(Bread_prefix + " " +Utils.translateAsString("kircheplusaddon.commands.brot.add.error.nopermission"));
                     }
                 }
             }

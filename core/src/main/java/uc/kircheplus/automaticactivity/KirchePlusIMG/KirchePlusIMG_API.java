@@ -2,6 +2,15 @@ package uc.kircheplus.automaticactivity.KirchePlusIMG;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -15,22 +24,13 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import uc.kircheplus.KirchePlus;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.Base64;
-
 public class KirchePlusIMG_API {
 
     public static String uploadIMG(File file) throws IOException {
 
         HttpPost request = new HttpPost("http://upload.kircheplus-mod.de/api/upload");
-        UsernamePasswordCredentials creds = new UsernamePasswordCredentials("api", KirchePlus.main.configuration().kircheplustoken().get());
+        UsernamePasswordCredentials creds = new UsernamePasswordCredentials("api",
+            KirchePlus.main.configuration().kircheplustoken().get());
         try {
             request.addHeader(new BasicScheme().authenticate(creds, request, null));
         } catch (AuthenticationException e) {
@@ -42,16 +42,15 @@ public class KirchePlusIMG_API {
         request.setEntity(entity2);
 
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-             CloseableHttpResponse response = httpClient.execute(request)) {
+            CloseableHttpResponse response = httpClient.execute(request)) {
 
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String result = EntityUtils.toString(entity);
 
-
                 JsonParser parser = new JsonParser();
                 JsonObject json = (JsonObject) parser.parse(result);
-                return json.get("image_url").toString().replace("\"","");
+                return json.get("image_url").toString().replace("\"", "");
 
             }
 
@@ -68,11 +67,13 @@ public class KirchePlusIMG_API {
             URL url = new URL("http://upload.kircheplus-mod.de/api/check");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            String basicAuth = Base64.getEncoder().encodeToString(("api:"+KirchePlus.main.configuration().kircheplustoken().get()).getBytes(StandardCharsets.UTF_8));
-            conn.setRequestProperty("Authorization", "Basic "+basicAuth);
+            String basicAuth = Base64.getEncoder().encodeToString(
+                ("api:" + KirchePlus.main.configuration().kircheplustoken().get()).getBytes(
+                    StandardCharsets.UTF_8));
+            conn.setRequestProperty("Authorization", "Basic " + basicAuth);
 
             try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()))) {
+                new InputStreamReader(conn.getInputStream()))) {
                 for (String line; (line = reader.readLine()) != null; ) {
                     result.append(line);
                 }
@@ -81,17 +82,18 @@ public class KirchePlusIMG_API {
             JsonObject json = (JsonObject) parser.parse(result.toString());
 
             return json.get("login").getAsBoolean();
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
         return false;
     }
 
-    public static boolean checkConnection(){
+    public static boolean checkConnection() {
         try {
             URL url = new URL("http://upload.kircheplus-mod.de");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.connect();
             System.out.println(con.getResponseCode());
-            if(HttpURLConnection.HTTP_OK != con.getResponseCode()){
+            if (HttpURLConnection.HTTP_OK != con.getResponseCode()) {
                 return false;
             }
             return true;

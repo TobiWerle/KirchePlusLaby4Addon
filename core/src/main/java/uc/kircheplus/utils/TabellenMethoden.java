@@ -13,9 +13,6 @@ import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
-import uc.kircheplus.KirchePlus;
-import uc.kircheplus.events.PrefixHandler;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,9 +20,18 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import uc.kircheplus.KirchePlus;
+import uc.kircheplus.automaticactivity.SheetHandler;
+import uc.kircheplus.events.PrefixHandler;
 
 
 public class TabellenMethoden {
@@ -36,10 +42,10 @@ public class TabellenMethoden {
     public static ArrayList<String> memberSheets = new ArrayList<>();
     public static boolean ownLoaded = false;
 
-    //Speichert irgendwie nicht....
     public static Credential authorize() throws IOException, GeneralSecurityException {
         InputStream in = TabellenMethoden.class.getResourceAsStream("/credentials.json");
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(GsonFactory.getDefaultInstance(), new InputStreamReader(in));
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(
+            GsonFactory.getDefaultInstance(), new InputStreamReader(in));
 
         List<String> scopes = Arrays.asList(SheetsScopes.SPREADSHEETS);
 
@@ -47,10 +53,11 @@ public class TabellenMethoden {
             GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(), GsonFactory.getDefaultInstance(),
                 clientSecrets, scopes)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File("tokens")))
+                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File("tokens/labymod")))
                 .setAccessType("offline")
                 .build();
-            Credential credential = new testAuthorize(flow, new LocalServerReceiver()).authorize("user");
+            Credential credential = new SheetAuthorize(flow, new LocalServerReceiver()).authorize(
+                "user");
             return credential;
         }
 
@@ -58,12 +65,12 @@ public class TabellenMethoden {
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
             GoogleNetHttpTransport.newTrustedTransport(), GsonFactory.getDefaultInstance(),
             clientSecrets, scopes)
-            .setDataStoreFactory(new FileDataStoreFactory(new File("tokens/own")))
+            .setDataStoreFactory(new FileDataStoreFactory(new File("tokens/labymod/own")))
             .setAccessType("offline")
             .build();
 
-        Credential credential = new testAuthorize(flow, new LocalServerReceiver()).authorize("user");
-
+        Credential credential = new SheetAuthorize(flow, new LocalServerReceiver()).authorize(
+            "user");
 
         return credential;
 
@@ -72,7 +79,6 @@ public class TabellenMethoden {
 
     public static Sheets getSheetsService() throws IOException, GeneralSecurityException {
         Credential credential = authorize();
-        System.out.println("Hier?3");
         return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(),
             GsonFactory.getDefaultInstance(), credential)
             .setApplicationName(APPLICATION_NAME)
@@ -80,47 +86,41 @@ public class TabellenMethoden {
     }
 
     public static void init() {
-        //Thread thread = new Thread(new Runnable() {
-            //@Override
-            //public void run() {
-                System.out.println("Hier2.1");
-                File file = new File(System.getenv("APPDATA") + "/.minecraft/tokens");
-                if (!file.exists()) {
-                    file.mkdirs();
-                }
-                System.out.println("Hier2.2");
+        Thread thread = new Thread(() -> {
+            File file = new File(System.getenv("APPDATA") + "/.minecraft/tokens/labymod");
+            if (!file.exists()) {
+                file.mkdirs();
+            }
 
-                File credentialsFile = new File(System.getenv("APPDATA") + "/.minecraft/tokens/StoredCredential");
-                InputStream credentials = TabellenMethoden.class.getResourceAsStream("/StoredCredential");
-                System.out.println("Hier2.3");
-                if (!credentialsFile.exists()) {
-                    try {
-                        Files.copy(credentials, credentialsFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    } catch (IOException ignored) {
-                    }
-                }
-                System.out.println("Hier2.4");
+            File credentialsFile = new File(
+                System.getenv("APPDATA") + "/.minecraft/tokens/labymod/StoredCredential");
+            InputStream credentials = TabellenMethoden.class.getResourceAsStream(
+                "/StoredCredential");
+            if (!credentialsFile.exists()) {
                 try {
-                    System.out.println("Hier2.5");
-                    sheetsService = getSheetsService();
-                    System.out.println("Hier2.6");
-                    getHVList();
-                    getBrotList();
-                    getAllMemberSheets();
-                    System.out.println("Hier2.7");
-                } catch (IOException | GeneralSecurityException e) {
-                    System.out.println(e.getMessage());
-                    e.printStackTrace();
+                    Files.copy(credentials, credentialsFile.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException ignored) {
                 }
-           // }
-      // });
-        //thread.start();
+            }
+            try {
+                sheetsService = getSheetsService();
+                getHVList();
+                getBrotList();
+                getAllMemberSheets();
+                SheetHandler.getMemberOwnSheet();
+            } catch (IOException | GeneralSecurityException e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+        });
+        thread.start();
 
     }
 
     public static void deleteOwn() {
         File credentialsFile = new File(
-            System.getenv("APPDATA") + "/.minecraft/tokens/own/StoredCredential");
+            System.getenv("APPDATA") + "/.minecraft/tokens/labymod/own/StoredCredential");
         credentialsFile.delete();
     }
 
@@ -131,9 +131,7 @@ public class TabellenMethoden {
         ValueRange response = sheetsService.spreadsheets().values()
             .get(SPREADSHEET_ID, range)
             .execute();
-        System.out.println("HV1");
         List<List<Object>> values = response.getValues();
-        System.out.println("HV2");
         if (values == null || values.isEmpty()) {
             System.out.println("No data found!");
         } else {
@@ -141,7 +139,6 @@ public class TabellenMethoden {
                 try {
                     new HV_User(row.get(0).toString(), row.get(1).toString(), row.get(2).toString(),
                         row.get(4).toString(), row.get(5).toString(), row.get(3).toString());
-                    System.out.println(row.get(0).toString() + " - " +row.get(1).toString());
                 } catch (Exception ignored) {
                 }
             }
@@ -194,8 +191,7 @@ public class TabellenMethoden {
                 try {
                     getHVList();
                     getBrotList();
-                    KirchePlus.main.displaynameClass.refreshAll();
-                    System.out.println("Refresh list!! JUHUUUU");
+                    KirchePlus.main.displayname.refreshAll();
                 } catch (IOException | GeneralSecurityException e) {
                     throw new RuntimeException(e);
                 }

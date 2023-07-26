@@ -1,14 +1,6 @@
 package uc.kircheplus.automaticactivity;
 
 
-
-import net.labymod.api.Laby;
-import net.labymod.api.client.Minecraft;
-import uc.kircheplus.KirchePlus;
-import uc.kircheplus.automaticactivity.Imgur.Imgur;
-import uc.kircheplus.automaticactivity.KirchePlusIMG.KirchePlusIMG_API;
-import uc.kircheplus.config.uploadTypes;
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -18,6 +10,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
+import net.labymod.api.Laby;
+import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.event.ClickEvent;
+import net.labymod.api.client.component.event.HoverEvent;
+import net.labymod.api.event.Subscribe;
+import net.labymod.api.event.client.chat.ChatReceiveEvent;
+import net.labymod.api.event.client.lifecycle.GameTickEvent;
+import uc.kircheplus.KirchePlus;
+import uc.kircheplus.automaticactivity.Imgur.Imgur;
+import uc.kircheplus.automaticactivity.KirchePlusIMG.KirchePlusIMG_API;
+import uc.kircheplus.config.uploadTypes;
+import uc.kircheplus.utils.Utils;
 
 public class Handler {
 
@@ -29,120 +34,113 @@ public class Handler {
     public static SheetHandler.activityTypes activityType;
 
     static String[] ranks = {
-            "Theologe","Theologin",
-            "Diakon", "Diakonin",
-            "Priester", "Priesterin",
-            "Dekan", "Dekanin",
-            "Bischof", "Bischöfin",
-            "Kardinal", "Kardinälin",
-            "Papst", "Päpstin"
+        "Theologe", "Theologin",
+        "Diakon", "Diakonin",
+        "Priester", "Priesterin",
+        "Dekan", "Dekanin",
+        "Bischof", "Bischöfin",
+        "Kardinal", "Kardinälin",
+        "Papst", "Päpstin"
     };
 
-    /*@SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onChat(ClientChatReceivedEvent e) {
-        if(!KircheConfig.ownGMail){
+
+    @Subscribe
+    public void onChatReceiveEvent(ChatReceiveEvent e) {
+        if (!KirchePlus.main.configuration().owngmailenabled().get()) {
             return;
         }
-        ITextComponent message = e.getMessage();
-        String unformattedText = message.getUnformattedText().replace(":", "");
-        String[] arr = unformattedText.split(" ");
-        for(String rank : ranks){
-            if(arr[0].equals(rank)){
-                if(arr[1].equals(Minecraft.getMinecraft().player.getName())){
-                    if(arr[2].equals(".") || message.getUnformattedText().contains("Begrüßung:") && message.getUnformattedText().contains("Texte:") && message.getUnformattedText().contains("GBK:")){
-                        Style style = new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(TextFormatting.DARK_AQUA + "Aktivität eintragen"))).
-                                setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/saveactivity event"));
-                        message.setStyle(style);
-                        message.appendSibling(new TextComponentString(TextFormatting.BLUE + " {⬆}"));
-                        e.setMessage(message);
+
+        Component message = e.message();
+        String unformattedText = e.chatMessage().getPlainText();
+        String[] arr = unformattedText.replace(":", "").split(" ");
+
+        for (String rank : ranks) {
+            if (arr[0].equals(rank)) {
+                if (arr[1].equals(Laby.labyAPI().getProfile().getUsername())) {
+                    if (arr[2].equals(".")
+                        || unformattedText.contains("Begrüßung:") && unformattedText.contains(
+                        "Texte:") && unformattedText.contains("GBK:")) {
+                        Component newMessage = createActivityMessage(message,
+                            "/saveactivity event");
+                        e.setMessage(newMessage);
                         return;
                     }
-                }else{
-                    if(message.getUnformattedText().contains("Begrüßung:") && message.getUnformattedText().contains("Texte:") && message.getUnformattedText().contains("GBK:")){
-                        Style style = new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(TextFormatting.DARK_AQUA + "Aktivität eintragen"))).
-                                setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/saveactivity event"));
-                        message.setStyle(style);
-                        message.appendSibling(new TextComponentString(TextFormatting.BLUE + " {⬆}"));
-                        e.setMessage(message);
+                } else {
+                    if (unformattedText.contains("Begrüßung:") && unformattedText.contains("Texte:")
+                        && unformattedText.contains("GBK:")) {
+                        Component newMessage = createActivityMessage(message,
+                            "/saveactivity event");
+                        e.setMessage(newMessage);
                         return;
                     }
                 }
             }
         }
-        if(unformattedText.contains("[F-Bank]") && unformattedText.contains("in die Fraktionsbank") && unformattedText.contains(Minecraft.getMinecraft().player.getName())){
-            Pattern pattern = Pattern.compile("\\w+\\$");
-            Matcher matcher = pattern.matcher(message.getUnformattedText());
-            while(matcher.find()){
-                amount = Integer.parseInt(matcher.group().replace("$",""));
-            }
-            ITextComponent newMessage = new TextComponentString(message.getFormattedText().replace("[⬆]", ""));
-            Style style = new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(TextFormatting.DARK_AQUA + "Aktivität eintragen"))).
-                    setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/saveactivity money"));
-            newMessage.setStyle(style);
-            newMessage.appendSibling(new TextComponentString(TextFormatting.BLUE + " {⬆}"));
 
+        if (unformattedText.contains("[F-Bank]") && unformattedText.contains("in die Fraktionsbank")
+            && unformattedText.contains(Laby.labyAPI().getProfile().getUsername())) {
+            Pattern pattern = Pattern.compile("\\w+\\$");
+            Matcher matcher = pattern.matcher(unformattedText);
+            while (matcher.find()) {
+                amount = Integer.parseInt(matcher.group().replace("$", ""));
+            }
+            Component newMessage = createActivityMessage(message, "/saveactivity money");
             e.setMessage(newMessage);
             return;
         }
 
-        if(unformattedText.startsWith("[Ablass]") && unformattedText.contains("hat einen Ablassbrief gekauft.")){
-            Style style = new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(TextFormatting.DARK_AQUA + "Aktivität eintragen"))).
-                    setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/saveactivity ablass"));
-            message.setStyle(style);
-            message.appendSibling(new TextComponentString(TextFormatting.BLUE + " {⬆}"));
-            e.setMessage(message);
+        if (unformattedText.startsWith("[Ablass]") && unformattedText.contains(
+            "hat einen Ablassbrief gekauft.")) {
+            Component newMessage = createActivityMessage(message, "/saveactivity ablass");
+            e.setMessage(newMessage);
             topic = unformattedText.split(" ")[1];
             return;
         }
-
-        if(unformattedText.startsWith("[Segen]") && unformattedText.contains("Du hast")){
-            Style style = new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(TextFormatting.DARK_AQUA + "Aktivität eintragen"))).
-                    setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/saveactivity segen"));
-            message.setStyle(style);
-            message.appendSibling(new TextComponentString(TextFormatting.BLUE + " {⬆}"));
-            e.setMessage(message);
+        if (unformattedText.startsWith("[Segen]") && unformattedText.contains("Du hast")) {
+            Component newMessage = createActivityMessage(message, "/saveactivity segen");
+            e.setMessage(newMessage);
             topic = unformattedText.split(" ")[3];
             return;
         }
-
-        if(unformattedText.startsWith("News") && unformattedText.contains("sind nun verheiratet!")){
-            Style style = new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(TextFormatting.DARK_AQUA + "Aktivität eintragen"))).
-                    setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/saveactivity marry"));
-            message.setStyle(style);
-            message.appendSibling(new TextComponentString(TextFormatting.BLUE + " {⬆}"));
-            e.setMessage(message);
+        if (unformattedText.startsWith("News") && unformattedText.contains(
+            "sind nun verheiratet!")) {
+            Component newMessage = createActivityMessage(message, "/saveactivity marry");
+            e.setMessage(newMessage);
             topic = arr[1] + " & " + arr[3];
             return;
         }
-
-        if(unformattedText.startsWith("Danke") && unformattedText.contains("die Spende!")){
+        if (unformattedText.startsWith("Danke") && unformattedText.contains("die Spende!")) {
             churchdonation = true;
-            System.out.println("Es wurde eine Spende lokalisiert!");
             return;
         }
-        if(churchdonation) {
-            if(unformattedText.contains("$") && unformattedText.contains("-")){
-                int donation = Integer.parseInt(unformattedText.replace("  -", "").replace("$", ""));
-                System.out.println("Es wurde gespendet: " + donation);
+        if (churchdonation) {
+            if (unformattedText.contains("$") && unformattedText.contains("-")) {
+                int donation = Integer.parseInt(
+                    unformattedText.replace("  -", "").replace("$", ""));
                 amount = donation;
                 churchdonation = false;
-                ITextComponent newMessage = new TextComponentString(message.getFormattedText().replace("[⬆]", ""));
-                Style style = new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(TextFormatting.DARK_AQUA + "Aktivität eintragen"))).
-                        setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/saveactivity money"));
-                newMessage.setStyle(style);
-                newMessage.appendSibling(new TextComponentString(TextFormatting.BLUE + " {⬆}"));
+                Component newMessage = createActivityMessage(message, "/saveactivity money");
                 e.setMessage(newMessage);
                 return;
             }
         }
 
-    }*/
+    }
+
+    public Component createActivityMessage(Component message, String activityCommand) {
+        Component activityMessage = message.copy();
+        activityMessage.clickEvent(ClickEvent.runCommand(activityCommand));
+        String hovertext = Utils.translateAsString("kircheplusaddon.activity.chat.hovertext");
+        activityMessage.hoverEvent(HoverEvent.showText(Component.text(hovertext)));
+        activityMessage.append(Component.text("§9 {⬆}"));
+        return activityMessage;
+    }
 
     public static String screenshot(BufferedImage image) throws IOException {
         File file = new File(System.getenv("APPDATA") + "/.minecraft/Kirche+/lastActivity.jpg");
         ImageIO.write(addTextWatermark(image), "jpg", file);
 
-        if(KirchePlus.main.configuration().uploadtype().get() == uploadTypes.KIRCHEPLUSIMG){
+        if (KirchePlus.main.configuration().uploadtype().get() == uploadTypes.KIRCHEPLUSIMG) {
             return KirchePlusIMG_API.uploadIMG(file);
         }
 
@@ -164,9 +162,10 @@ public class Handler {
         int centerX = (image.getWidth() - (int) rect.getWidth()) / 2;
         int centerY = image.getHeight() / 2;
 
-        g2d.drawString(date.format(now), centerX, centerY-100);
-        g2d.drawString(Laby.labyAPI().minecraft().getClientPlayer().getName(), centerX, centerY-50);
-        if(isDonation){
+        g2d.drawString(date.format(now), centerX, centerY - 100);
+        g2d.drawString(Laby.labyAPI().minecraft().getClientPlayer().getName(), centerX,
+            centerY - 50);
+        if (isDonation) {
             g2d.drawString(+amount + "$", centerX, centerY);
         }
         g2d.dispose();
@@ -179,25 +178,15 @@ public class Handler {
     public static boolean moneyPage = false;
     public static boolean blessPage = false;
     public static boolean marryPage = false;
-    static int ticks=3;
+    static int ticks = 3;
     public static boolean openHVGUI = false;
     public static boolean GDGUI = false;
-    /*@SubscribeEvent
-    public static void onTickEvent(TickEvent e){
-        if(openGUI){
-            if(ticks==3){
-                ticks=0;
-                return;
-            }
-            openGUI = false;
-            ticks=3;
-            ActivityGUI gui = new ActivityGUI();
-            gui.eventPage = eventPage;
-            gui.moneyPage = moneyPage;
-            gui.blessPage = blessPage;
-            gui.marryPage = marryPage;
-            Minecraft.getMinecraft().displayGuiScreen(gui);
 
+    @Subscribe
+    public void onTick(GameTickEvent e) {
+        if (openGUI) {
+            openGUI = false;
+            KirchePlus.main.activityGUI.init(eventPage, moneyPage, blessPage, marryPage);
             eventPage = false;
             moneyPage = false;
             blessPage = false;
@@ -205,18 +194,13 @@ public class Handler {
             isDonation = false;
         }
 
-        if(openHVGUI){
-            HVADD_GUI gui = new HVADD_GUI();
-            Minecraft.getMinecraft().displayGuiScreen(gui);
+        if (openHVGUI) {
+            KirchePlus.main.hv_gui.init();
             openHVGUI = false;
         }
-        if(GDGUI){
-            GD_GUI gui = new GD_GUI();
-            Minecraft.getMinecraft().displayGuiScreen(gui);
+        if (GDGUI) {
+            KirchePlus.main.gd_gui.init();
             GDGUI = false;
         }
-
-
-
-    }*/
+    }
 }

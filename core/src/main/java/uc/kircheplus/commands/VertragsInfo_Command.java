@@ -14,6 +14,7 @@ import net.labymod.api.client.chat.command.Command;
 import uc.kircheplus.KirchePlus;
 import uc.kircheplus.utils.FactionContract;
 import uc.kircheplus.utils.Utils;
+
 public class VertragsInfo_Command extends Command {
 
     public VertragsInfo_Command() {
@@ -22,53 +23,62 @@ public class VertragsInfo_Command extends Command {
 
     @Override
     public boolean execute(String prefix, String[] args) {
-        if(args.length < 1){
-            displayMessage("§8 - §b/vertraginfo info §8-> §7Zeigt dir an, mit wem die Kirche ein Vertrag hat.");
-            displayMessage("§8 - §b/vertraginfo <Fraktion> §8-> §7Zeigt dir genaue Infos zum jeweiligen Vertrag an.");
-            displayMessage("§8 - §b/vertraginfo §8-> §7Zeigt dir diese Liste an und aktualisiert die Liste.");
+        if (args.length < 1) {
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.help.info"));
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.help.faction"));
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.help.main"));
             loadFactionInfoJSON();
-
-            return false;
+            return true;
         }
-        if(args.length == 1){
-            if(args[0].equalsIgnoreCase("info")){
+        if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("info")) {
 
-                displayMessage("§3 =============Verträge=============");
-                for(FactionContract factionContract : KirchePlus.main.FactionContracs){
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.title"));
+                for (FactionContract factionContract : KirchePlus.main.FactionContracs) {
                     String name = factionContract.getFaction();
                     String contract = "§4✖";
-                    if(factionContract.isContract()) contract = "§a✔";
+                    if (factionContract.isContract()) {
+                        contract = "§a✔";
+                    }
                     String[] conditions = factionContract.getConditions();
 
-                    displayMessage(" "+ name);
-                    displayMessage("§5   Vertrag: "+contract);
+                    displayMessage(" " + name);
+                    displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.info.contract") + contract);
                 }
-                displayMessage("§3 ====================================");
-                return false;
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.info.placeholder"));
+                return true;
             }
 
-            for(FactionContract factionContract : KirchePlus.main.FactionContracs){
+            for (FactionContract factionContract : KirchePlus.main.FactionContracs) {
                 String name = factionContract.getFaction();
-                if(name.toLowerCase().startsWith(args[0].toLowerCase())){
+                if (name.toLowerCase().startsWith(args[0].toLowerCase())) {
                     String contract = "§4✖";
-                    if(factionContract.isContract()) contract = "§a✔";
+                    if (factionContract.isContract()) {
+                        contract = "§a✔";
+                    }
                     String[] conditions = factionContract.getConditions();
 
-                    displayMessage("§3 =============Verträge=============");
-                    displayMessage(" "+ name);
-                    displayMessage("§5   Vertrag: "+contract);
-                    if(conditions == null ) displayMessage("§f   Konditionen: §cKeine");
-                    if(conditions != null ) for(String conditionsString : conditions) displayMessage("§f    "+conditionsString);
+                    displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.title"));
+                    displayMessage(" " + name);
+                    displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.info.contracts") + " " + contract);
+                    if (conditions == null) {
+                        displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.info.noconditions"));
+                    }
+                    if (conditions != null) {
+                        for (String conditionsString : conditions) {
+                            displayMessage("§f    " + conditionsString);
+                        }
+                    }
                     displayMessage("§3 ====================================");
-                    return false;
+                    return true;
                 }
             }
 
-            displayMessage("§cEs wurde keine Fraktion mit diesem Namen gefunden!");
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.info.factionnotexists"));
 
         }
 
-        return false;
+        return true;
     }
 
     public static void loadFactionInfoJSON() {
@@ -80,14 +90,14 @@ public class VertragsInfo_Command extends Command {
             JsonObject json = element.getAsJsonObject();
             JsonArray faction = json.getAsJsonArray("factions");
 
-            for(int i = 0; i < faction.size(); i++){
+            for (int i = 0; i < faction.size(); i++) {
                 JsonObject factionjson = (JsonObject) faction.get(i);
                 String name = factionjson.get("Name").getAsString();
                 boolean contract = factionjson.get("contract").getAsBoolean();
                 JsonArray conditionsArray = factionjson.get("conditions").getAsJsonArray();
                 String[] conditions = null;
 
-                if(conditionsArray.size() != 0){
+                if (conditionsArray.size() != 0) {
                     conditions = new String[conditionsArray.size()];
                     for (int s = 0; s < conditionsArray.size(); s++) {
                         conditions[s] = conditionsArray.get(s).getAsString();
@@ -96,13 +106,13 @@ public class VertragsInfo_Command extends Command {
                 System.out.println(name + contract);
                 new FactionContract(name, contract, conditions);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static String getJson() {
-        String jsonUrl = "https://kircheplus-mod.de/api/factioncontract.json"; // Die URL der JSON-Datei hier eintragen
+        String jsonUrl = "https://kircheplus-mod.de/api/factioncontract.json";
 
         try {
             SSLSocketFactory socketFactory = KirchePlus.main.utils.socketFactory();
@@ -110,7 +120,8 @@ public class VertragsInfo_Command extends Command {
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setSSLSocketFactory(socketFactory);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(conn.getInputStream()));
             String line;
             StringBuilder response = new StringBuilder();
 
@@ -127,9 +138,10 @@ public class VertragsInfo_Command extends Command {
         }
         return null;
     }
-    public ArrayList<String> getFactions(){
+
+    public ArrayList<String> getFactions() {
         ArrayList<String> list = new ArrayList<>();
-        for(FactionContract faction : KirchePlus.main.FactionContracs){
+        for (FactionContract faction : KirchePlus.main.FactionContracs) {
             list.add(faction.getFaction());
         }
         return list;

@@ -10,7 +10,6 @@ public abstract class Displayname {
     }
 
     public void checkHide() {
-        System.out.println("Standart Hide");
     }
 
     public void refreshAll() {
@@ -19,5 +18,9 @@ public abstract class Displayname {
 
     public boolean isMasked(Object o) {
         return false;
+    }
+
+    public void removeFromOtherTeam(String playername) {
+
     }
 }

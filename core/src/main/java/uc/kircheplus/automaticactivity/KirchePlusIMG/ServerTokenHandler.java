@@ -7,7 +7,7 @@ import uc.kircheplus.KirchePlus;
 public class ServerTokenHandler {
 
     @Subscribe
-    public void onChat(ChatReceiveEvent e){
+    public void onChat(ChatReceiveEvent e) {
         String msg = e.message().plainCopy().toString();
         if (msg.startsWith("Token:")) {
             String token = msg.replace("Token: ", "");

@@ -1,21 +1,20 @@
-package uc.kircheplus.v1_12_2.automaticactivity;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiLabel;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.util.ResourceLocation;
-import uc.kircheplus.KirchePlus;
-import uc.kircheplus.automaticactivity.Handler;
-import uc.kircheplus.automaticactivity.SheetHandler;
+package uc.kircheplus.v1_12_2.customui;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiLabel;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
+import uc.kircheplus.KirchePlus;
+import uc.kircheplus.automaticactivity.Handler;
+import uc.kircheplus.automaticactivity.SheetHandler;
+import uc.kircheplus.utils.Utils;
 
-public class VersionedGUI extends GuiScreen {
+public class customGUI_Activity extends GuiScreen {
+
     public boolean eventPage = false;
     public boolean moneyPage = false;
     public boolean blessPage = false;
@@ -29,7 +28,10 @@ public class VersionedGUI extends GuiScreen {
     private GuiTextField textField;
     private GuiTextField textFieldAmount;
 
-    public VersionedGUI() {
+    private boolean textFieldVisible = false;
+    private boolean textFieldAmountVisible = false;
+
+    public customGUI_Activity() {
     }
 
     @Override
@@ -39,25 +41,23 @@ public class VersionedGUI extends GuiScreen {
 
     @Override
     public void initGui() {
-        addButtons();
-        textField = new GuiTextField(100, fontRenderer
-            , width / 2 - 50, height / 2 - 66, 100,
-            20);
+        textField = new GuiTextField(100, fontRenderer, width / 2 - 50, height / 2 - 66, 108, 20);
+        textField.setVisible(false);
         textField.setText("");
         textField.setFocused(true);
         textField.setEnabled(true);
         textField.setCanLoseFocus(true);
-        textField.setVisible(false);
 
-        textFieldAmount = new GuiTextField(101, fontRenderer
-            , width / 2 - 50, height / 2 - 33, 100,
+        textFieldAmount = new GuiTextField(101, fontRenderer, width / 2 - 50, height / 2 - 33, 108,
             20);
+        textFieldAmount.setVisible(false);
         textFieldAmount.setText("");
         textFieldAmount.setFocused(false);
         textFieldAmount.setEnabled(true);
         textFieldAmount.setCanLoseFocus(true);
         textFieldAmount.setMaxStringLength(2);
-        textFieldAmount.setVisible(false);
+
+        addButtons();
         super.initGui();
     }
 
@@ -67,7 +67,6 @@ public class VersionedGUI extends GuiScreen {
         textFieldAmount.setText("");
         textField.setText("");
 
-
         super.onGuiClosed();
     }
 
@@ -75,16 +74,14 @@ public class VersionedGUI extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawRect(width / 2 - 58, height / 2 - 103, width / 2 + 58, height / 2 + 59, 0xa6c0c0c0);
         drawRect(width / 2 - 55, height / 2 - 100, width / 2 + 55, height / 2 + 56, 0x4ddcf527);
-        fontRenderer.drawString("Aktivitäten", width / 2 - 25, height / 2 - 112, 0xd943ff64);
+        fontRenderer.drawString(Utils.translateAsString("kircheplusaddon.activity.gui.title"), width / 2 - 25, height / 2 - 112, 0xd943ff64);
 
-        textField.setVisible(false);
-        System.out.println(textField.getVisible());
-        textField.drawTextBox();
-        textField.setVisible(false);
-        System.out.println(textField.getVisible());
-
-        textFieldAmount.drawTextBox();
-
+        if (textFieldVisible) {
+            textField.drawTextBox();
+        }
+        if (textFieldAmountVisible) {
+            textFieldAmount.drawTextBox();
+        }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -99,8 +96,7 @@ public class VersionedGUI extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (SheetHandler.MemberSheet == null) {
-            KirchePlus.main.utils.displayMessage(
-                "§cDeine Tabelle wurde noch nicht geladen. Bitte warte etwas!");
+            KirchePlus.main.utils.displayMessage(Utils.translateAsString("kircheplusaddon.activity.gui.sheetnotloaded"));
             return;
         }
         switch (button.id) {
@@ -167,8 +163,7 @@ public class VersionedGUI extends GuiScreen {
             case 7:
                 //Thema/Ort bestätigen Button
                 if (textField.getText().length() <= 2) {
-                    KirchePlus.main.utils.displayMessage(
-                        "§cDer eingegebene Text für Thema/Ort darf nicht kürzer als 3 Zeichen sein!");
+                    KirchePlus.main.utils.displayMessage(Utils.translateAsString("kircheplusaddon.activity.gui.error.shortthema"));
                     return;
                 }
                 Handler.topic = textField.getText();
@@ -183,7 +178,8 @@ public class VersionedGUI extends GuiScreen {
                 //Thema/Ort Page zurück Button
                 buttonList.clear();
                 labelList.clear();
-                textField.setVisible(false);
+                textFieldVisible = false;
+                //textField.setVisible(false);
                 eventPage = true;
                 topicPage = false;
                 Thread thread = new Thread() {
@@ -222,13 +218,11 @@ public class VersionedGUI extends GuiScreen {
             case 11:
                 //Spende bestätigen Button
                 if (textField.getText().length() <= 2) {
-                    KirchePlus.main.utils.displayMessage(
-                        "§cDer eingegebene Spielername darf nicht kürzer als 3 Zeichen sein!");
+                    KirchePlus.main.utils.displayMessage(Utils.translateAsString("kircheplusaddon.activity.gui.error.shortname"));
                     return;
                 }
                 if (Handler.amount == 0) {
-                    KirchePlus.main.utils.displayMessage(
-                        "§cDas eingezahlte Geld darf nicht 0$ sein!");
+                    KirchePlus.main.utils.displayMessage(Utils.translateAsString("kircheplusaddon.activity.gui.error.money"));
                     return;
                 }
                 Handler.topic = textField.getText();
@@ -244,6 +238,7 @@ public class VersionedGUI extends GuiScreen {
                 //Zurück Button von Spende GUI
                 buttonList.clear();
                 labelList.clear();
+                textFieldVisible = true;
                 textField.setVisible(false);
                 donationPage = false;
                 moneyPage = true;
@@ -263,14 +258,12 @@ public class VersionedGUI extends GuiScreen {
             case 13:
                 //Bibel bestätigen Button
                 if (textField.getText().length() <= 2) {
-                    KirchePlus.main.utils.displayMessage(
-                        "§cDer eingegebene Spielername darf nicht kürzer als 3 Zeichen sein!");
+                    KirchePlus.main.utils.displayMessage(Utils.translateAsString("kircheplusaddon.activity.gui.error.shortname"));
                     return;
                 }
                 if (textFieldAmount.getText().length() == 0
                     && Integer.parseInt(textFieldAmount.getText()) == 0) {
-                    KirchePlus.main.utils.displayMessage(
-                        "§cDie angegebene Anzahl darf nicht 0 sein!");
+                    KirchePlus.main.utils.displayMessage(Utils.translateAsString("kircheplusaddon.activity.gui.error.zeroamount"));
                     return;
                 }
                 Handler.topic = textField.getText();
@@ -286,8 +279,8 @@ public class VersionedGUI extends GuiScreen {
                 //Zurück Button von Bibel GUI
                 buttonList.clear();
                 labelList.clear();
-                textField.setVisible(false);
-                textFieldAmount.setVisible(false);
+                textFieldVisible = false;
+                textFieldAmountVisible = false;
                 bibelPage = false;
                 moneyPage = true;
                 Thread thread3 = new Thread() {
@@ -318,7 +311,7 @@ public class VersionedGUI extends GuiScreen {
                 //GUI für Taufe
                 buttonList.clear();
                 labelList.clear();
-                textField.setVisible(false);
+                textFieldVisible = false;
                 blessPage = false;
                 taufePage = true;
                 Thread thread5 = new Thread() {
@@ -337,8 +330,7 @@ public class VersionedGUI extends GuiScreen {
             case 17:
                 //Taufe bestätigen
                 if (textField.getText().length() <= 2) {
-                    KirchePlus.main.utils.displayMessage(
-                        "§cDer eingegebene Spielername darf nicht kürzer als 3 Zeichen sein!");
+                    KirchePlus.main.utils.displayMessage(Utils.translateAsString("kircheplusaddon.activity.gui.error.shortname"));
                     return;
                 }
                 Handler.activityType = SheetHandler.activityTypes.TAUFE;
@@ -354,8 +346,8 @@ public class VersionedGUI extends GuiScreen {
                 //Zurück Button von Taufe GUI
                 buttonList.clear();
                 labelList.clear();
-                textField.setVisible(false);
-                textFieldAmount.setVisible(false);
+                textFieldVisible = false;
+                textFieldAmountVisible = false;
                 taufePage = false;
                 blessPage = true;
                 addButtons();
@@ -393,15 +385,21 @@ public class VersionedGUI extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
-        textField.textboxKeyTyped(typedChar, keyCode);
-
+        if (textFieldVisible) {
+            textField.textboxKeyTyped(typedChar, keyCode);
+        }
         Pattern pattern = Pattern.compile("[0-9]+");
         Matcher matcher = pattern.matcher(typedChar + "");
         while (matcher.find()) {
-            textFieldAmount.textboxKeyTyped(typedChar, keyCode);
+            if (textFieldAmountVisible) {
+                textFieldAmount.textboxKeyTyped(typedChar, keyCode);
+            }
+
         }
         if (keyCode == 14) {
-            textFieldAmount.textboxKeyTyped(typedChar, keyCode);
+            if (textFieldAmountVisible) {
+                textFieldAmount.textboxKeyTyped(typedChar, keyCode);
+            }
         }
         super.keyTyped(typedChar, keyCode);
     }
@@ -410,80 +408,76 @@ public class VersionedGUI extends GuiScreen {
         if (eventPage) {
             buttonList.add(new GuiButton(0, width / 2 - 50, height / 2 - 98, 100, 20, "SHG"));
             buttonList.add(new GuiButton(1, width / 2 - 50, height / 2 - 76, 100, 20, "Tafel"));
-            buttonList.add(
-                new GuiButton(2, width / 2 - 50, height / 2 - 54, 100, 20, "Spendenevent"));
-            buttonList.add(
-                new GuiButton(3, width / 2 - 50, height / 2 - 32, 100, 20, "Beichtevent"));
+            buttonList.add(new GuiButton(2, width / 2 - 50, height / 2 - 54, 100, 20, "Spendenevent"));
+            buttonList.add(new GuiButton(3, width / 2 - 50, height / 2 - 32, 100, 20, "Beichtevent"));
 
             buttonList.add(new GuiButton(4, width / 2 - 50, height / 2 - 10, 100, 20, "JGA"));
             buttonList.add(new GuiButton(5, width / 2 - 50, height / 2 + 12, 100, 20, "KK"));
-            buttonList.add(
-                new GuiButton(6, width / 2 - 50, height / 2 + 34, 100, 20, "Gottesdienst"));
+            buttonList.add(new GuiButton(6, width / 2 - 50, height / 2 + 34, 100, 20, "Gottesdienst"));
+
+
         } else if (topicPage) {
             GuiLabel label = new GuiLabel(fontRenderer, 999, width / 2 - 50, height / 2 - 90, 50,
                 20, 0xd943ff64);
-            label.addLine("Thema/Ort eingeben:");
+            label.addLine(Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.entertopic"));
             labelList.add(label);
-            textField.setVisible(true);
+            textFieldVisible = true;
 
-            buttonList.add(
-                new GuiButton(7, width / 2 - 50, height / 2 - 43, 100, 20, "Thema Bestätigen"));
-            buttonList.add(new GuiButton(8, width / 2 - 50, height / 2 + 34, 100, 20, "Zurück"));
+            buttonList.add(new GuiButton(7, width / 2 - 50, height / 2 - 43, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.confirmtopic")));
+            buttonList.add(new GuiButton(8, width / 2 - 50, height / 2 + 34, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.back")));
         }
         if (moneyPage) {
-            buttonList.add(new GuiButton(9, width / 2 - 50, height / 2 - 43, 100, 20, "Spenden"));
-            buttonList.add(new GuiButton(10, width / 2 - 50, height / 2 - 20, 100, 20, "Bibeln"));
+            buttonList.add(new GuiButton(9, width / 2 - 50, height / 2 - 43, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.donation")));
+            buttonList.add(new GuiButton(10, width / 2 - 50, height / 2 - 20, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.bible")));
         }
 
         if (donationPage) {
             GuiLabel label = new GuiLabel(fontRenderer, 888, width / 2 - 50, height / 2 - 90, 50,
                 20, 0xd943ff64);
-            label.addLine("Spielername:");
+            label.addLine(Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.playername"));
             labelList.add(label);
-            textField.setVisible(true);
+            textFieldVisible = true;
 
             buttonList.add(
-                new GuiButton(11, width / 2 - 50, height / 2 - 43, 100, 20, "Bestätigen"));
-            buttonList.add(new GuiButton(12, width / 2 - 50, height / 2 + 34, 100, 20, "Zurück"));
+                new GuiButton(11, width / 2 - 50, height / 2 - 43, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.confirm")));
+            buttonList.add(new GuiButton(12, width / 2 - 50, height / 2 + 34, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.back")));
         }
         if (bibelPage) {
             GuiLabel label = new GuiLabel(fontRenderer, 888, width / 2 - 50, height / 2 - 85, 50,
                 20, 0xd943ff64);
-            label.addLine("Spielername:");
+            label.addLine(Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.playername"));
             labelList.add(label);
 
-            textField.setVisible(true);
+            textFieldVisible = true;
             GuiLabel label2 = new GuiLabel(fontRenderer, 889, width / 2 - 50, height / 2 - 48, 50,
                 20, 0xd943ff64);
-            label2.addLine("Anzahl:");
+            label2.addLine(Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.amount"));
             labelList.add(label2);
-            textFieldAmount.setVisible(true);
+            textFieldAmountVisible = true;
 
             buttonList.add(
-                new GuiButton(13, width / 2 - 50, height / 2 + 11, 100, 20, "Bestätigen"));
-            buttonList.add(new GuiButton(14, width / 2 - 50, height / 2 + 34, 100, 20, "Zurück"));
+                new GuiButton(13, width / 2 - 50, height / 2 + 11, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.confirm")));
+            buttonList.add(new GuiButton(14, width / 2 - 50, height / 2 + 34, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.back")));
         }
 
         if (blessPage) {
-            buttonList.add(new GuiButton(15, width / 2 - 50, height / 2 - 43, 100, 20, "Segen"));
-            buttonList.add(new GuiButton(16, width / 2 - 50, height / 2 - 20, 100, 20, "Taufe"));
+            buttonList.add(new GuiButton(15, width / 2 - 50, height / 2 - 43, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.blessing")));
+            buttonList.add(new GuiButton(16, width / 2 - 50, height / 2 - 20, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.baptism")));
         }
 
         if (taufePage) {
             GuiLabel label = new GuiLabel(fontRenderer, 890, width / 2 - 50, height / 2 - 85, 50,
                 20, 0xd943ff64);
-            label.addLine("Täufling:");
+            label.addLine(Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.baptized"));
             labelList.add(label);
-            textField.setVisible(true);
+            textFieldVisible = true;
 
-            buttonList.add(
-                new GuiButton(17, width / 2 - 50, height / 2 + 11, 100, 20, "Bestätigen"));
-            buttonList.add(new GuiButton(18, width / 2 - 50, height / 2 + 34, 100, 20, "Zurück"));
+            buttonList.add(new GuiButton(17, width / 2 - 50, height / 2 + 11, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.confirm")));
+            buttonList.add(new GuiButton(18, width / 2 - 50, height / 2 + 34, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.back")));
         }
         if (marryPage) {
-            buttonList.add(new GuiButton(19, width / 2 - 50, height / 2 - 43, 100, 20, "Hochzeit"));
-            buttonList.add(
-                new GuiButton(20, width / 2 - 50, height / 2 - 20, 100, 20, "Befehl /marry"));
+            buttonList.add(new GuiButton(19, width / 2 - 50, height / 2 - 43, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.marriage")));
+            buttonList.add(new GuiButton(20, width / 2 - 50, height / 2 - 20, 100, 20, Utils.translateAsString("kircheplusaddon.activity.gui.addbuttons.commandmarry")));
         }
     }
 }

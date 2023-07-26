@@ -1,15 +1,15 @@
 package uc.kircheplus.utils;
 
 
-import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.world.WorldEnterEvent;
-import uc.kircheplus.KirchePlus;
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import javax.net.ssl.HttpsURLConnection;
+import net.labymod.api.event.Subscribe;
+import net.labymod.api.event.client.world.WorldEnterEvent;
+import uc.kircheplus.KirchePlus;
 
 public class UpdateCheck {
 
@@ -20,7 +20,7 @@ public class UpdateCheck {
     public void onWorldJoin(WorldEnterEvent e) {
         if (!sended && !updateStatus) {
             sended = true;
-            KirchePlus.main.utils.displayMessageLater("§8[§6Kirche-Plus§8] §eEs wurde ein Update gefunden. Lade dir dieses auf der KirchePlus-Mod Website herunter!", 5);
+            KirchePlus.main.utils.displayMessageLater(Utils.translateAsString("kircheplusaddon.update"), 5);
         }
     }
 

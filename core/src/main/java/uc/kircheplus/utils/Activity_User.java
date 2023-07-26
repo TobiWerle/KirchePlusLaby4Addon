@@ -1,9 +1,8 @@
 package uc.kircheplus.utils;
 
+import java.util.ArrayList;
 import net.labymod.api.Laby;
 import uc.kircheplus.KirchePlus;
-
-import java.util.ArrayList;
 
 public class Activity_User {
 

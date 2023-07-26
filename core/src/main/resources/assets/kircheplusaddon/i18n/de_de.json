@@ -1,0 +1,245 @@
+{
+    "kircheplusaddon": {
+        "settings": {
+            "name": "KirchePlus Addon",
+            "enabled": {
+                "name": "aktivieren",
+                "description": "Aktiviere, oder deaktiviere das gesamte Addon."
+            },
+            "hv": {
+                "name": "Hausverbot Einstellungen",
+                "description": "Einstellungen für die Hausverbote",
+                "hvenable": {
+                    "name": "Hausverbot aktivieren",
+                    "description": "Aktiviere, oder deaktiviere die Anzeige beim Spielernamen, wenn der Spieler Hausverbot hat."
+                },
+                "hvprefix": {
+                    "name": "Hausverbot Prefix",
+                    "description": "Setze den Prefix, wie Spieler mit Hausverbot angezeigt werden."
+                }
+            },
+            "bread": {
+                "name": "Brotliste Einstellungen",
+                "description": "Einstellungen für die Brotliste",
+                "breadenable": {
+                    "name": "Brotliste aktivieren",
+                    "description": "Aktiviere, oder deaktiviere die Anzeige beim Spielernamen, wenn der Spieler in der Brotliste steht."
+                },
+                "breadprefix": {
+                    "name": "Brotliste",
+                    "description": "Setze den Prefix, wie Spieler in der Brotliste angezeigt werden."
+                }
+            },
+            "drink": {
+                "name": "Durst Einstellungen",
+                "description": "Einstellungen für die Warnungen beim durstig sein.",
+                "drinkmessageenable": {
+                    "name": "Trinknachricht aktivieren",
+                    "description": "Aktiviere, oder deaktiviere die Chatnachricht, wenn du durstig bist."
+                },
+                "drinksoundenable": {
+                    "name": "Trinksound aktivieren",
+                    "description": "Aktiviere, oder deaktiviere den Ton, wenn du durstig bist."
+                }
+            },
+            "uploadtype": {
+                "name": "Uploadtype"
+            },
+            "owngmailenabled": {
+                "name": "OwnGmail aktivieren"
+            },
+            "kircheplustoken": {
+                "name": "Upload Token"
+            },
+            "header": {
+                "addonsettings": {
+                    "name": "Addon Einstellungen"
+                }
+            }
+        },
+        "commands": {
+            "aequip": {
+                "usage": "§8 - §b /aequip <Wasser/Brot> {Anzahl} §8 -> §7Equipe dir automatisch Brot oder Wasser",
+                "error": {
+                    "number": "§cBitte gib eine Zahl an, die nicht über 5 ist.",
+                    "usage": "§8 - §b /aequip <Wasser/Brot> {Anzahl}"
+                }
+            },
+            "brot": {
+                "title": "§1[]§a========§7[§6Brotliste§7]§a========§1[]",
+                "sync": {
+                    "pending": "§7Die Brotliste wird synchronisiert! Dies könnte paar Sekunden dauern!",
+                    "complete": "§bDie Brotliste wurde synchronisiert!"
+                },
+                "help": {
+                    "main": "§8 - §b/brot §8-> §7synchronisiere die Brotliste mit dem Client..",
+                    "list": "§8 - §b/brot list §8-> §7Gibt eine Liste mit allen Spielern aus, die Brot bekommen haben.",
+                    "info": "§8 - §b/brot info <User> §8-> Zeigt die Brot-Infos zum Spieler.",
+                    "add": "§8 - §b/brot add <User> §8-> Füge einen Spieler zur Brotliste hinzu.",
+                    "help": "§8 - §b/brot help §8-> Zeigt die Befehle an."
+                },
+                "info": {
+                    "receiver": "§3 -§6 Empfänger:§a %s",
+                    "member": "§3 -§6 Member:§a %s",
+                    "date": "§e -§6 Datum:"
+                },
+                "add": {
+                    "error": {
+                        "namelenght": "§cDer Name darf nicht länger als 16 Zeichen lang sein!",
+                        "nospace": "§cEs wurde nicht genug Platz in der Brot-Tabelle gefunden!",
+                        "nopermission": "§cDu hast keine Rechte auf die Brot-Tabelle"
+                    },
+                    "success": "§aDer Spieler wurde eingetragen!"
+                }
+            },
+            "checkdonation": {
+                "updatenames": {
+                    "owngmailerror": "§cFür diese Funktion musst du in der Config ownGmail aktiviert haben!",
+                    "sync": {
+                        "pending": "§aDie Spendenliste wird auf Fehler überprüft. Dies kann einige Zeit brauchen.",
+                        "replaced": "§e %s §cwurde durch %s §aersetzt.",
+                        "nochanges": "§aEs wurden keine veränderten Namen entdeckt."
+                    }
+                },
+                "intask": "§cBitte warte noch einen Moment!",
+                "sync": "§7Die Donations werden geladen. Dies kann einige Zeit in anspruch nehmen!",
+                "inpublic": " §7-§6 %s §bSteht im Öffentlich-Channel :§6 %s §a(%s)",
+                "notpublic": " §7-§6 %s §amuss eingetragen werden :§6 %s",
+                "nodonation": "§cEs wurden keine Eintrage gefunden, die eingetragen werden müssen!"
+            },
+            "hv": {
+                "title": "§1[]§3========§7[§bHausverbot§7]§3========§1[]",
+                "sync": {
+                    "pending": "§7Die Hausverbote werden synchronisiert! Dies könnte paar Sekunden dauern!",
+                    "complete": "§bDie Hausverbote wurden synchronisiert!"
+                },
+                "help": {
+                    "main": "§8- §b/hv §8-> §7synchronisiere die Hausverbote mit dem Client.",
+                    "list": "§8- §b/hv list §8-> §7Gibt eine Liste mit allen Spielern aus, die Hausverbot haben.",
+                    "namecheck": "§8- §b/hv namecheck §8-> §7Überprüft ob es Fehler bei den eingetragenen Spielernamen gibt.",
+                    "info": "§8- b/hv info <User> §8-> §7Zeigt die Hausverbot-Infos zum Spieler.",
+                    "add": "§8- §b/hv add <User> §8-> §7Trägt ein Hausverbot ein."
+                },
+                "namecheck": {
+                    "sync": "§7NameCheck wird ausgeführt! Dies könnte paar Sekunden dauern!",
+                    "nochanges": "§8- Es wurden keine Spieler mit fehlerhaften Namen gefunden!",
+                    "changesfound": "§7- Spieler mit Fehler im Namen:"
+                },
+                "info": {
+                    "who": "§8- §7Wer:§c %s",
+                    "by": "§8- §7Von:§c %s",
+                    "reason": "§8- §7Grund:§c %s",
+                    "when": "§8- §7Wann:§c %s",
+                    "until": "§8- §7Bis:§c %s",
+                    "weeks": "Wochen",
+                    "duration": "§8- §7Dauer:§c %s %s"
+                },
+                "add": {
+                    "error": "§cDer Name darf nicht länger als 16 Zeichen lang sein!",
+                    "nospace": "§c Es wurde nicht genug Platz in der Hausverbots-Tabelle gefunden!",
+                    "success": "§aDas Hausverbot wurde eingetragen!",
+                    "nopermissions": "§cDu hast keine Rechte auf die Hausverbots-Tabelle"
+                }
+            },
+            "saveactivty": {
+                "error": {
+                    "owngmail": "§cFür diese Funktion musst du in der Config ownGmail aktiviert haben!",
+                    "needtoken": "§cDu brauchst ein KirchePlus Token, für dein jetzigen Upload Typ.",
+                    "createtoken": "§cUm ein Token zu erstellen, joine den §9KirchePlus-Mod.de §cServer!",
+                    "serverdown": "§cDie Verbindung zu upload.KirchePlus-Mod.de kann nicht hergestellt werden!",
+                    "fix": "§cMelde dies einem Leader und wechsel solange in den Mod-Einstellungen zu Imgur.",
+                    "tokeninvalid": "§cDein Token ist abgelaufen oder ungültig.",
+                    "tokenfix": "§cErstelle ein neuen Token auf §9KirchePlus-Mod.de"
+                },
+                "screenupload": "§9Screenshot wird hochgeladen dies kann eine Zeit lang dauern!",
+                "unexpected": "§cEs ist ein unerwarteter Fehler aufgetreten!"
+            },
+            "topactivity": {
+                "title": "§3=============Top-Aktivität=============",
+                "noactivitys": "§cKein Member hat bisher Aktivitäten eingetragen!",
+                "places": {
+                    "1": "§7➜ §6 1. %s",
+                    "2": "§7➜ §6 2. %s",
+                    "3": "§7➜ §6 3. %s",
+                    "4": "§7➜ §6 4. %s",
+                    "5": "§7➜ §6 5. %s"
+                },
+                "ownactivity": {
+                    "youractivity": "§3===========Deine Aktivität==============",
+                    "name": "§7 ➜ §bName: %s",
+                    "total": "§7 ➜ §bGesamt: %s",
+                    "roleplay": "§7 ➜ §bRoleplay: %s",
+                    "donations": "§7 ➜ §bSpenden: %s",
+                    "placeholder": "§3===================================="
+                }
+            },
+            "contractinfo": {
+                "title": "§3 =============Verträge=============",
+                "help": {
+                    "info": "§8 - §b/vertraginfo info §8-> §7Zeigt dir an, mit wem die Kirche ein Vertrag hat.",
+                    "faction": "8 - §b/vertraginfo <Fraktion> §8-> §7Zeigt dir genaue Infos zum jeweiligen Vertrag an.",
+                    "main": "§8 - §b/vertraginfo §8-> §7Zeigt dir diese Liste an und aktualisiert die Liste."
+                },
+                "info": {
+                    "contract": "§5   Vertrag: ",
+                    "placeholder": "§3 ====================================",
+                    "contracts": "§5   Vertrag: ",
+                    "noconditions": "§f   Konditionen: §cKeine",
+                    "factionnotexists": "§cEs wurde keine Fraktion mit diesem Namen gefunden!"
+                }
+            }
+        },
+        "activity": {
+            "chat": {
+                "hovertext": "§3Aktivität eintragen"
+            },
+            "save": {
+                "enteractivity": "§bDeine Aktivität wird eingetragen...",
+                "screenshoterror": "§cDer Screenshot konnte nicht hochgeladen werden! Versuche es erneut!",
+                "unexpected": "§cEs ist ein unerwarteter Fehler aufgetreten!",
+                "errornotfound": "§eDer Fehler wurde nicht gefunden. Ein Neustart des Spiels wird dies beheben.",
+                "nexttry": "§eEs wird versucht die Aktivität erneut einzutragen...",
+                "noplacefound": "§cEs wurde nicht genug Platz in deinem Aktinachweis gefunden!",
+                "success": "§bDeine Aktivität wurde eingetragen!"
+            },
+            "gui": {
+                "title": "Aktivitäten",
+                "sheetnotloaded": "§cDeine Tabelle wurde noch nicht geladen. Bitte warte etwas!",
+                "error": {
+                    "shortthema": "§cDer eingegebene Text für Thema/Ort darf nicht kürzer als 3 Zeichen sein!",
+                    "shortname": "§cDer eingegebene Spielername darf nicht kürzer als 3 Zeichen sein!",
+                    "money": "§cDas eingezahlte Geld darf nicht 0$ sein!",
+                    "zeroamount": "§cDie angegebene Anzahl darf nicht 0 sein!"
+                },
+                "addbuttons": {
+                    "entertopic": "Thema/Ort eingeben:",
+                    "confirmtopic": "Thema Bestätigen",
+                    "back": "Zurück",
+                    "donation": "Spenden",
+                    "bible": "Bibeln",
+                    "playername": "Spielername:",
+                    "confirm": "Bestätigen",
+                    "amount": "Anzahl:",
+                    "blessing": "Segen",
+                    "baptism": "Taufe",
+                    "baptized": "Täufling:",
+                    "marriage": "Hochzeit",
+                    "commandmarry": "Befehl /marry"
+                }
+            }
+        },
+        "guihouseban": {
+            "title": "Hausverbot",
+            "reason": "Grund",
+            "duration": "Dauer (In Wochen)",
+            "confirm": "Bestätigen",
+            "error": {
+                "reasonshort": "§cDu musst ein Grund angeben, der länger als 3 Zeichen lang ist!",
+                "weekstoshort": "§cDu musst ein Wochenanzahl angeben, die länger als 0 Wochen ist!",
+                "weekstolongrank3": "§cMit Rang 3 darfst du maximal 3 Wochen vergeben!",
+                "weekstolongrank4": "§cMit Rang 4 darfst du maximal 4 Wochen vergeben!"
+            }
+        },
+        "update": "§8[§6Kirche-Plus§8] §eEs wurde ein Update gefunden. Lade dir dieses auf der KirchePlus-Mod Website herunter!"
+    }
+}

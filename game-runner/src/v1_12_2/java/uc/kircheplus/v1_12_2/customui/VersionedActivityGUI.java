@@ -1,11 +1,11 @@
-package uc.kircheplus.v1_12_2.automaticactivity;
-
-import net.labymod.api.models.Implements;
-import net.minecraft.client.Minecraft;
-import uc.kircheplus.automaticactivity.ActivityGUI;
+package uc.kircheplus.v1_12_2.customui;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.labymod.api.models.Implements;
+import net.minecraft.client.Minecraft;
+import uc.kircheplus.customui.ActivityGUI;
+
 @Singleton
 @Implements(ActivityGUI.class)
 public class VersionedActivityGUI extends ActivityGUI {
@@ -16,8 +16,8 @@ public class VersionedActivityGUI extends ActivityGUI {
     }
 
     @Override
-    public void init(boolean event, boolean money, boolean bless, boolean marry){
-        VersionedGUI gui = new VersionedGUI();
+    public void init(boolean event, boolean money, boolean bless, boolean marry) {
+        customGUI_Activity gui = new customGUI_Activity();
         gui.eventPage = event;
         gui.moneyPage = money;
         gui.blessPage = bless;

@@ -1,19 +1,12 @@
 package uc.kircheplus.utils;
 
 
-import net.labymod.api.reference.annotation.Referenceable;
-import uc.kircheplus.KirchePlus;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.net.ssl.SSLSocketFactory;
+import net.labymod.api.client.component.Component;
+import net.labymod.api.reference.annotation.Referenceable;
+import net.labymod.api.util.I18n;
 
 @Referenceable
 public abstract class Utils {
@@ -28,11 +21,18 @@ public abstract class Utils {
     public SSLSocketFactory socketFactory() {
         return null;
     }
+
     public boolean isOnline(String Playername) {
         return false;
     }
 
     public BufferedImage makeScreen() throws IOException {
         return null;
+    }
+    public static String translateAsString(String key, String... args){
+        return I18n.translate(key, args);
+    }
+    public static Component translateAsComponent(String key, Component... components){
+        return Component.translatable(key, components);
     }
 }

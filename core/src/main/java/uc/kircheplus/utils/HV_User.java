@@ -44,7 +44,7 @@ public class HV_User {
     }
 
 
-    public String getUtilDate() {
+    public String getUntilDate() {
         return utilDate;
     }
 
