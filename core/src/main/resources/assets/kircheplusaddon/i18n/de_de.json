@@ -61,7 +61,7 @@
             "aequip": {
                 "usage": "§8 - §b /aequip <Wasser/Brot> {Anzahl} §8 -> §7Equipe dir automatisch Brot oder Wasser",
                 "error": {
-                    "number": "§cBitte gib eine Zahl an, die nicht über 5 ist.",
+                    "number": "§cBitte gib eine Zahl an, die nicht größer als 5 und nicht kleiner als 1 ist.",
                     "usage": "§8 - §b /aequip <Wasser/Brot> {Anzahl}"
                 }
             },
@@ -177,7 +177,7 @@
                 "title": "§3 =============Verträge=============",
                 "help": {
                     "info": "§8 - §b/vertraginfo info §8-> §7Zeigt dir an, mit wem die Kirche ein Vertrag hat.",
-                    "faction": "8 - §b/vertraginfo <Fraktion> §8-> §7Zeigt dir genaue Infos zum jeweiligen Vertrag an.",
+                    "faction": "§8 - §b/vertraginfo <Fraktion> §8-> §7Zeigt dir genaue Infos zum jeweiligen Vertrag an.",
                     "main": "§8 - §b/vertraginfo §8-> §7Zeigt dir diese Liste an und aktualisiert die Liste."
                 },
                 "info": {

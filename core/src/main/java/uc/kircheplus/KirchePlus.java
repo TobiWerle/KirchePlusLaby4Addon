@@ -72,11 +72,11 @@ public class KirchePlus extends LabyAddon<config> {
 
         registerEvents();
         registerCommands();
-        sounds.registerSounds();
-        TabellenMethoden.init();
-        UpdateCheck.updateCheck();
+        loadData();
 
-        Laby.references().soundService().play(sounds.drink);
+        //TODO
+        //register Sounds (soundhandler)
+
     }
 
     @Override
@@ -108,5 +108,9 @@ public class KirchePlus extends LabyAddon<config> {
         this.registerCommand(cmd);
         commands.add(cmd);
     }
-
+    private void loadData(){
+        TabellenMethoden.init();
+        UpdateCheck.updateCheck();
+        VertragsInfo_Command.loadFactionInfoJSON();
+    }
 }

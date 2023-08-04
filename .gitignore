@@ -76,3 +76,10 @@ build-data.txt
 
 # Don't ignore libraries
 !libs/*.jar
+game-runner/.DS_Store
+game-runner/src/.DS_Store
+core/src/main/java/uc/.DS_Store
+core/src/main/java/.DS_Store
+core/src/main/.DS_Store
+core/src/.DS_Store
+core/.DS_Store

@@ -33,7 +33,7 @@ public class aEquip extends Command {
                 amount = 1;
                 Laby.references().chatExecutor().chat("/equip");
                 equip();
-                return false;
+                return true;
             }
             if (args[0].equalsIgnoreCase("brot")) {
                 slot = 0;
@@ -47,6 +47,10 @@ public class aEquip extends Command {
         if (args.length == 2) {
             try {
                 amount = Integer.parseInt(args[1]);
+                if(amount == 0){
+                    displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.number"));
+                    return true;
+                }
                 if (amount <= 5) {
                     if (args[0].equalsIgnoreCase("brot")) {
                         slot = 0;
@@ -60,6 +64,7 @@ public class aEquip extends Command {
                         enabled = true;
                         Laby.references().chatExecutor().chat("/equip");
                         equip();
+                        return true;
                     }
                 } else {
                     displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.number"));
@@ -70,7 +75,7 @@ public class aEquip extends Command {
                 displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.usage"));
             }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -106,13 +111,14 @@ public class aEquip extends Command {
     }
 
     private static void equip() {
+        if(!enabled)return;
         Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(100);
                 KirchePlus.main.guiController.clickSlot(slot);
                 Thread.sleep(750);
                 amount--;
-                if (amount != 0) {
+                if (amount > 0) {
                     Laby.references().chatExecutor().chat("/equip");
                     equip();
                 } else {

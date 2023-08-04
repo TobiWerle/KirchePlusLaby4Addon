@@ -61,7 +61,7 @@
             "aequip": {
                 "usage": "§8 - §b /aequip <Wasser/Brot> {Anzahl} §8 -> §7Equip yourself automatically with bread or water",
                 "error": {
-                    "number": "§cPlease selct a number that is not higher than 5.",
+                    "number": "§cPlease selct a number that is not higher than 5 and not lower than 1.",
                     "usage": "§8 - §b /aequip <Water/Bread> {Amount}"
                 }
             },
@@ -177,7 +177,7 @@
                 "title": "§3 =============Contracts=============",
                 "help": {
                     "info": "§8 - §b/contractinfo info §8-> §7Displays informations about contracts the church has.",
-                    "faction": "8 - §b/contractinfo <faction> §8-> §7Displays detailed informations about the specific contract.",
+                    "faction": "§8 - §b/contractinfo <faction> §8-> §7Displays detailed informations about the specific contract.",
                     "main": "§8 - §b/contractinfo §8-> §7Displays this list and updates the list."
                 },
                 "info": {
