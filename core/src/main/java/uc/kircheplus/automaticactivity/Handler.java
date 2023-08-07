@@ -104,7 +104,7 @@ public class Handler {
         }
         if (unformattedText.startsWith("News") && unformattedText.contains(
             "sind nun verheiratet!")) {
-            Component newMessage = createActivityMessage(message, "/saveactivity marry");
+            Component newMessage = createActivityMessage(message, "/saveactivity marry " + arr[1] + " " + arr[3]);
             e.setMessage(newMessage);
             topic = arr[1] + " & " + arr[3];
             return;

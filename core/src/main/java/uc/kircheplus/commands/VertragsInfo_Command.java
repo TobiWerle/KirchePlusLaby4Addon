@@ -8,10 +8,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 import net.labymod.api.client.chat.command.Command;
 import uc.kircheplus.KirchePlus;
+import uc.kircheplus.events.PrefixHandler;
 import uc.kircheplus.utils.FactionContract;
 import uc.kircheplus.utils.Utils;
 
@@ -23,6 +26,8 @@ public class VertragsInfo_Command extends Command {
 
     @Override
     public boolean execute(String prefix, String[] args) {
+        if(!CommandBypass.bypass)return true;
+        CommandBypass.bypass = false;
         if (args.length < 1) {
             displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.help.info"));
             displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.help.faction"));
@@ -31,7 +36,7 @@ public class VertragsInfo_Command extends Command {
             return true;
         }
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("info")) {
+            if (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("list")) {
 
                 displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.title"));
                 for (FactionContract factionContract : KirchePlus.main.FactionContracs) {
@@ -79,6 +84,26 @@ public class VertragsInfo_Command extends Command {
         }
 
         return true;
+    }
+
+    @Override
+    public List<String> complete(String[] arguments) {
+        List<String> tabCompletions = new ArrayList<>();
+        if (arguments.length == 0) {
+            tabCompletions.add("info");
+            tabCompletions.add("list");
+            for(String faction : getFactions()){
+                tabCompletions.add(faction);
+            }
+            return tabCompletions;
+        }
+
+        for(String faction : getFactions()){
+            if(faction.toLowerCase().startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add(faction);
+            }
+        }
+        return tabCompletions;
     }
 
     public static void loadFactionInfoJSON() {

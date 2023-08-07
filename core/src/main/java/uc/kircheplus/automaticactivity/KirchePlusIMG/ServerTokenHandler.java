@@ -8,7 +8,7 @@ public class ServerTokenHandler {
 
     @Subscribe
     public void onChat(ChatReceiveEvent e) {
-        String msg = e.message().plainCopy().toString();
+        String msg = e.chatMessage().getPlainText();
         if (msg.startsWith("Token:")) {
             String token = msg.replace("Token: ", "");
             KirchePlus.main.configuration().kircheplustoken().set(token);

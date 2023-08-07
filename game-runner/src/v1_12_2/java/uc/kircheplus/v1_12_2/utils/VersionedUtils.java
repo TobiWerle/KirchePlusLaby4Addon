@@ -3,9 +3,13 @@ package uc.kircheplus.v1_12_2.utils;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
@@ -17,6 +21,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import net.labymod.api.models.Implements;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.util.ScreenShotHelper;
 import uc.kircheplus.KirchePlus;
 import uc.kircheplus.utils.Utils;
@@ -27,7 +33,6 @@ public class VersionedUtils extends Utils {
 
     @Inject
     public VersionedUtils() {
-
     }
 
     @Override
@@ -44,6 +49,15 @@ public class VersionedUtils extends Utils {
                 KirchePlus.main.displayMessage(text);
             }
         }, seconds * 1000L);
+    }
+
+    @Override
+    public void sendChatMessage(String message){
+        Minecraft.getMinecraft().player.sendChatMessage(message);
+    }
+    @Override
+    public void addMessageToChatHistory(String message){
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().addToSentMessages(message);
     }
 
     @Override
@@ -77,6 +91,16 @@ public class VersionedUtils extends Utils {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<String> getAllOnlinePlayers(){
+        ArrayList<String> playerList = new ArrayList<>();
+        Collection<NetworkPlayerInfo> playersC = Minecraft.getMinecraft().getConnection().getPlayerInfoMap();
+        playersC.forEach((loadedPlayer) -> {
+            String name = loadedPlayer.getGameProfile().getName();
+            playerList.add(name);
+        });
+        return playerList;
     }
 
     public BufferedImage makeScreen() throws IOException {

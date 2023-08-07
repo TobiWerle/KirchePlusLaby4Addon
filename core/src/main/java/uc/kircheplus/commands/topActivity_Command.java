@@ -16,6 +16,8 @@ public class topActivity_Command extends Command {
 
     @Override
     public boolean execute(String prefix, String[] args) {
+        if(!CommandBypass.bypass)return true;
+        CommandBypass.bypass = false;
         if (args.length == 0) {
             Thread thread = new Thread(new Runnable() {
                 @Override

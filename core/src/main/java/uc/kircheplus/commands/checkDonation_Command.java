@@ -1,6 +1,9 @@
 package uc.kircheplus.commands;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.labymod.api.client.chat.command.Command;
 import uc.kircheplus.KirchePlus;
@@ -21,7 +24,8 @@ public class checkDonation_Command extends Command {
 
     @Override
     public boolean execute(String prefix, String[] args) {
-
+        if(!CommandBypass.bypass)return true;
+        CommandBypass.bypass = false;
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("updatenames")) {
                 if (!KirchePlus.main.configuration().owngmailenabled().get()) {
@@ -110,6 +114,26 @@ public class checkDonation_Command extends Command {
             }
         }
         return false;
+    }
+    @Override
+    public List<String> complete(String[] arguments) {
+        if (arguments.length == 0) {
+            List<String> tabCompletions = new ArrayList<>();
+            tabCompletions.add("updatenames");
+            return tabCompletions;
+        }
+        if(arguments.length == 1){
+            if(!arguments[0].endsWith(" ")){
+                List<String> tabCompletions = new ArrayList<>();
+                String updatenames = "updatenames";
+                if(updatenames.startsWith(arguments[0].toLowerCase())){
+                    tabCompletions.add("updatenames");
+                }
+                return tabCompletions;
+            }
+        }
+
+        return Collections.emptyList();
     }
 
 }

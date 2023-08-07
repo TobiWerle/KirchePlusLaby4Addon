@@ -16,6 +16,7 @@ public class config extends AddonConfig {
 
     @SettingSection("addonsettings")
     public final subHVConfig hv = new subHVConfig();
+
     public final subBreadConfig bread = new subBreadConfig();
 
     public final subDrinkConfig drink = new subDrinkConfig();

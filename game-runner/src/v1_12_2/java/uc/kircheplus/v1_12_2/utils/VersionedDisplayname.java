@@ -39,12 +39,12 @@ public class VersionedDisplayname extends Displayname {
         }
         try {
             String teamName = p.getName();
-            System.out.println(teamName + " wird registriert!");
+            //System.out.println(teamName + " wird registriert!");
             if(Minecraft.getMinecraft().player.getWorldScoreboard().getObjectiveInDisplaySlot(1) == null) {
                 boolean b = p.getWorldScoreboard().getTeam("nopush").getMembershipCollection()
                     .stream().anyMatch(name -> name.equalsIgnoreCase(playername));
                 if (b) {
-                    System.out.println(playername + " Ist im NoPushTeam :(");
+                    //System.out.println(playername + " Ist im NoPushTeam :(");
                     return;
                 }
             }
@@ -53,7 +53,7 @@ public class VersionedDisplayname extends Displayname {
             if (!PrefixHandler.HVs.containsKey(p.getName()) && !PrefixHandler.BrotUser.containsKey(p.getName())) {
                 if (Minecraft.getMinecraft().player.getWorldScoreboard().getTeams().stream().anyMatch(team -> team.getName().equals(teamName))) {
                     Minecraft.getMinecraft().player.getWorldScoreboard().removeTeam(teams.get(p.getName()));
-                    System.out.println(playername + " team entfernt!");
+                    //System.out.println(playername + " team entfernt!");
                 }
                 return;
             }
@@ -61,7 +61,7 @@ public class VersionedDisplayname extends Displayname {
             if (Minecraft.getMinecraft().player.getWorldScoreboard().getTeams().stream().noneMatch(team -> team.getName().equals(teamName))) {
                 ScorePlayerTeam team = Minecraft.getMinecraft().player.getWorldScoreboard().createTeam(teamName);
                 teams.put(p.getName(), team);
-                System.out.println(playername + "Team erstellt");
+                //System.out.println(playername + "Team erstellt");
             }
 
             if (PrefixHandler.HVs.containsKey(p.getName())) {
@@ -86,16 +86,16 @@ public class VersionedDisplayname extends Displayname {
 
             if (KirchePlus.main.configuration().bread.breadenable().get() || KirchePlus.main.configuration().hv.hvenable().get()) {
                 if (!isMasked(p)) {
-                    System.out.println(playername + "Team gegeben");
+                    //System.out.println(playername + "Team gegeben");
                     Minecraft.getMinecraft().player.getWorldScoreboard().addPlayerToTeam(p.getName(), teamName);
-                    System.out.println(playername + "Team gegeben2");
+                    //System.out.println(playername + "Team gegeben2");
                 }else{
-                    System.out.println(playername + " ist maskiert");
+                    //System.out.println(playername + " ist maskiert");
                 }
             }
 
         } catch (Exception e2) {
-            e2.printStackTrace();
+
         }
     }
 
@@ -148,8 +148,7 @@ public class VersionedDisplayname extends Displayname {
         }
         for(EntityPlayer player : Minecraft.getMinecraft().world.playerEntities){
             if(player.getTeam().getName() != null) {
-                System.out.println(
-                    player.getName() + " - " + player.getTeam().getName());
+                //System.out.println(player.getName() + " - " + player.getTeam().getName());
             }
         }
     }
@@ -163,16 +162,18 @@ public class VersionedDisplayname extends Displayname {
 
             }
         }
-
-        for (Entity e1 : Minecraft.getMinecraft().world.playerEntities) {
-            if(Minecraft.getMinecraft().player.getWorldScoreboard().getObjectiveInDisplaySlot(1) == null){
-                System.out.println("DisplaySlot ist null");
-                if(Minecraft.getMinecraft().player.getWorldScoreboard().getTeam("nopush").getMembershipCollection().stream().anyMatch(name -> name.equalsIgnoreCase(e1.getName()))){
-                    System.out.println(e1.getName() + " ist no push");
-                }else addTeam(e1.getName());
-            }else{
-                addTeam(e1.getName());
+        try{
+            for (Entity e1 : Minecraft.getMinecraft().world.playerEntities) {
+                if(Minecraft.getMinecraft().player.getWorldScoreboard().getObjectiveInDisplaySlot(1) == null){
+                    if(Minecraft.getMinecraft().player.getWorldScoreboard().getTeam("nopush").getMembershipCollection().stream().anyMatch(name -> name.equalsIgnoreCase(e1.getName()))){
+                        //System.out.println(e1.getName() + " ist no push");
+                    }else addTeam(e1.getName());
+                }else{
+                    addTeam(e1.getName());
+                }
             }
+        }catch (Exception ignored){
+
         }
     }
 

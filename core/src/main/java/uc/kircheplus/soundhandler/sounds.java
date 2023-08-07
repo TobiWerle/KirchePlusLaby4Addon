@@ -8,9 +8,11 @@ public class sounds {
     public static SoundType drink;
     public static SoundType dryout;
     public static void registerSounds(){
-        System.out.println("Register Sounds");
-        drink = SoundType.create("entity.drink.master", ResourceLocation.create("kircheplusaddon", "assets/kircheplusaddon/themes/vanilla/sounds/drink.ogg"));
-        //dryout = SoundType.create("entity.dryout.master", ResourceLocation.create("kircheplusaddon", "/sounds/entity.dryout.master"));
+        ResourceLocation drinkLocation = ResourceLocation.create("kircheplusaddon", "entity.drink.master");
+        drink = SoundType.create("entity.drink.master", drinkLocation);
+
+        ResourceLocation dryoutLocation = ResourceLocation.create("kircheplusaddon", "entity.dryout.master");
+        dryout = SoundType.create("entity.dryout.master", drinkLocation);
     }
 
 }

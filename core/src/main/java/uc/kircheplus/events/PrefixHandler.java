@@ -37,6 +37,9 @@ public class PrefixHandler {
 
     @Subscribe
     public void onGameTick(GameTickEvent e) {
-        KirchePlus.main.displayname.checkHide();
+        try {
+            KirchePlus.main.displayname.checkHide();
+        }catch (Exception e1){
+        }
     }
 }

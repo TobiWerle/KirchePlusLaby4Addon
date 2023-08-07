@@ -22,6 +22,8 @@ public class Brot_Command extends Command {
 
     @Override
     public boolean execute(String prefix, String[] args) {
+        if(!CommandBypass.bypass)return true;
+        CommandBypass.bypass = false;
         if (args.length == 0) {
             displayMessage(Utils.translateAsString("kircheplusaddon.commands.brot.sync.pending"));
             Thread thread = new Thread() {

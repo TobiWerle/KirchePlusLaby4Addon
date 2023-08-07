@@ -40,6 +40,14 @@
                 "drinksoundenable": {
                     "name": "Drink Sound enable",
                     "description": "Enable or disable the sound when you are thirsty."
+                },
+                "dryoutmessageenable": {
+                    "name": "Dryout message enable",
+                    "description": "Enable or disable the chat message when you dry out."
+                },
+                "dryoutsoundenable": {
+                    "name": "Dryout Sound enable",
+                    "description": "Enable or disable the sound when you dry out"
                 }
             },
             "uploadtype": {
@@ -59,10 +67,10 @@
         },
         "commands": {
             "aequip": {
-                "usage": "§8 - §b /aequip <Wasser/Brot> {Anzahl} §8 -> §7Equip yourself automatically with bread or water",
+                "usage": "§8 - §b /aequip <Wasser/Brot/Suppe> {Anzahl} §8 -> §7Equip yourself automatically with Bread, Water or Soup",
                 "error": {
                     "number": "§cPlease selct a number that is not higher than 5 and not lower than 1.",
-                    "usage": "§8 - §b /aequip <Water/Bread> {Amount}"
+                    "usage": "§8 - §b /aequip <Water/Bread/Suppe> {Amount}"
                 }
             },
             "brot": {
@@ -117,7 +125,7 @@
                     "main": "§8- §b/hv §8-> §7Synchronize the house bans with the client.",
                     "list": "§8- §b/hv list §8-> §7Display a list of all players who have a house ban.",
                     "namecheck": "§8- §b/hv namecheck §8-> §7Check for errors in the entered player names..",
-                    "info": "§8- b/hv info <User> §8-> §7Show house ban information for the player.",
+                    "info": "§8- §b/hv info <User> §8-> §7Show house ban information for the player.",
                     "add": "§8- §b/hv add <User> §8-> §7Add a house ban."
                 },
                 "namecheck": {
@@ -205,7 +213,15 @@
             "gui": {
             }
         },
-        "update": "§8[§6Kirche-Plus§8] §eAn update has been found. Download it from the KirchePlus-Mod website!"
+        "update": "§8[§6Kirche-Plus§8] §eAn update has been found. Download it from the KirchePlus-Mod website!",
+        "drink": {
+            "title": "§bYou are thirsty!",
+            "subtitle": "§cYou should drink something"
+        },
+        "dryout": {
+            "title": "§cYOU ARE DYING OF THIRST!",
+            "subtitle": "§cDRINK SOMEETHING FAST!!!!!"
+        }
     }
 }
 

@@ -1,29 +1,31 @@
 package uc.kircheplus.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-import net.labymod.api.Laby;
 import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import uc.kircheplus.KirchePlus;
 import uc.kircheplus.utils.Utils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class aEquip extends Command {
 
-    static int slot = 0;
-    static boolean enabled = false;
-    static int amount = 0;
+    public static int slot = 0;
+    public static boolean enabled = false;
+    public static int amount = 0;
 
     public aEquip() {
         super("aequip");
-
     }
 
     @Override
     public boolean execute(String prefix, String[] args) {
+        if(!CommandBypass.bypass)return true;
+        CommandBypass.bypass = false;
         if (args.length < 1) {
-            displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.usage"));
+            KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.usage"));
             return true;
         }
         if (args.length == 1) {
@@ -31,16 +33,27 @@ public class aEquip extends Command {
                 slot = 1;
                 enabled = true;
                 amount = 1;
-                Laby.references().chatExecutor().chat("/equip");
+                KirchePlus.main.utils.sendChatMessage("/equip");
                 equip();
                 return true;
-            }
+            }else
             if (args[0].equalsIgnoreCase("brot")) {
                 slot = 0;
                 enabled = true;
                 amount = 1;
-                Laby.references().chatExecutor().chat("/equip");
+                KirchePlus.main.utils.sendChatMessage("/equip");
                 equip();
+                return true;
+            }else
+            if (args[0].equalsIgnoreCase("suppe")) {
+                slot = 2;
+                enabled = true;
+                amount = 1;
+                KirchePlus.main.utils.sendChatMessage("/equip");
+                equip();
+                return true;
+            }else{
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.usage"));
                 return true;
             }
         }
@@ -48,55 +61,75 @@ public class aEquip extends Command {
             try {
                 amount = Integer.parseInt(args[1]);
                 if(amount == 0){
-                    displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.number"));
+                    KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.number"));
                     return true;
                 }
                 if (amount <= 5) {
                     if (args[0].equalsIgnoreCase("brot")) {
                         slot = 0;
                         enabled = true;
-                        Laby.references().chatExecutor().chat("/equip");
+                        KirchePlus.main.utils.sendChatMessage("/equip");
                         equip();
                         return true;
-                    }
+                    }else
                     if (args[0].equalsIgnoreCase("wasser")) {
                         slot = 1;
                         enabled = true;
-                        Laby.references().chatExecutor().chat("/equip");
+                        KirchePlus.main.utils.sendChatMessage("/equip");
                         equip();
+                        return true;
+                    }else
+                    if (args[0].equalsIgnoreCase("suppe")) {
+                        slot = 2;
+                        enabled = true;
+                        KirchePlus.main.utils.sendChatMessage("/equip");
+                        equip();
+                        return true;
+                    }else{
+                        KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.usage"));
                         return true;
                     }
                 } else {
-                    displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.number"));
-                    displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.usage"));
+                    KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.number"));
+                    KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.usage"));
+                    return true;
                 }
             } catch (Exception e) {
-                displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.number"));
-                displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.usage"));
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.number"));
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.error.usage"));
+                return true;
             }
         }
         return true;
     }
 
     @Override
-    public List<String> complete(String[] args) {
-        List<String> tabs = new ArrayList<String>();
-        if (args.length == 1) {
-            if (args[0].isEmpty()) {
-                tabs.add("wasser");
-                tabs.add("brot");
-                return tabs;
-            }
-            String water = "wasser";
-            String bread = "brot";
-            if (bread.toLowerCase().startsWith(args[0].toLowerCase())) {
-                tabs.add("brot");
-            }
-            if (water.toLowerCase().startsWith(args[0].toLowerCase())) {
-                tabs.add("wasser");
-            }
+    public List<String> complete(String[] arguments) {
+        if (arguments.length == 0) {
+            List<String> tabCompletions = new ArrayList<>();
+            tabCompletions.add("brot");
+            tabCompletions.add("wasser");
+            tabCompletions.add("suppe");
+            return tabCompletions;
         }
-        return tabs;
+        if(arguments.length == 1){
+            List<String> tabCompletions = new ArrayList<>();
+            String brot = "brot";
+            String wasser = "wasser";
+            String suppe = "suppe";
+            if(brot.startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add("brot");
+            }
+            if(wasser.startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add("wasser");
+            }
+            if(suppe.startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add("suppe");
+            }
+            return tabCompletions;
+        }
+
+        return Collections.emptyList();
     }
 
     @Subscribe
@@ -110,7 +143,7 @@ public class aEquip extends Command {
         }
     }
 
-    private static void equip() {
+    public static void equip() {
         if(!enabled)return;
         Thread thread = new Thread(() -> {
             try {
@@ -119,7 +152,7 @@ public class aEquip extends Command {
                 Thread.sleep(750);
                 amount--;
                 if (amount > 0) {
-                    Laby.references().chatExecutor().chat("/equip");
+                    KirchePlus.main.utils.sendChatMessage("/equip");
                     equip();
                 } else {
                     enabled = false;

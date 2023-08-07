@@ -5,10 +5,14 @@ import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import net.labymod.api.Laby;
 import net.labymod.api.client.chat.command.Command;
+import org.checkerframework.checker.units.qual.Prefix;
 import uc.kircheplus.KirchePlus;
 import uc.kircheplus.automaticactivity.Handler;
+import uc.kircheplus.events.Displayname;
 import uc.kircheplus.events.PrefixHandler;
 import uc.kircheplus.utils.HV_ADD;
 import uc.kircheplus.utils.HV_User;
@@ -24,6 +28,8 @@ public class hv_Command extends Command {
 
     @Override
     public boolean execute(String prefix, String[] args) {
+        if(!CommandBypass.bypass)return true;
+        CommandBypass.bypass = false;
         if (args.length == 0) {
             displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.sync.pending"));
             Thread thread = new Thread() {
@@ -143,5 +149,62 @@ public class hv_Command extends Command {
         }
 
         return true;
+    }
+
+    @Override
+    public List<String> complete(String[] arguments) {
+        if (arguments.length == 0) {
+            List<String> tabCompletions = new ArrayList<>();
+            tabCompletions.add("list");
+            tabCompletions.add("namecheck");
+            tabCompletions.add("info");
+            tabCompletions.add("add");
+            return tabCompletions;
+        }
+        if(arguments.length == 1){
+            if(!arguments[0].endsWith(" ")){
+                List<String> tabCompletions = new ArrayList<>();
+                String list = "list";
+                String namecheck = "namecheck";
+                String info = "info";
+                String add = "add";
+                if(list.startsWith(arguments[0].toLowerCase())){
+                    tabCompletions.add("list");
+                }
+                if(namecheck.startsWith(arguments[0].toLowerCase())){
+                    tabCompletions.add("namecheck");
+                }
+                if(info.startsWith(arguments[0].toLowerCase())){
+                    tabCompletions.add("info");
+                }
+                if(add.startsWith(arguments[0].toLowerCase())){
+                    tabCompletions.add("add");
+                }
+                return tabCompletions;
+            }
+        }
+
+        if(arguments[0].equalsIgnoreCase("add")) {
+            List<String> tabCompletions = new ArrayList<>();
+            for (String playerName : KirchePlus.main.utils.getAllOnlinePlayers()) {
+                if (playerName.toLowerCase().startsWith(arguments[1].toLowerCase())) {
+                    tabCompletions.add(playerName);
+                }
+            }
+            return tabCompletions;
+        }
+
+        if(arguments[0].equalsIgnoreCase("info")) {
+            List<String> tabCompletions = new ArrayList<>();
+                String start = arguments[1].toLowerCase();
+                for(String names : PrefixHandler.HVs.keySet()) {
+                    if(names.toLowerCase().startsWith(start)) {
+                        tabCompletions.add(names);
+                    }
+                }
+                return tabCompletions;
+        }
+
+        return Collections.emptyList();
     }
 }

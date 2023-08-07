@@ -40,6 +40,14 @@
                 "drinksoundenable": {
                     "name": "Trinksound aktivieren",
                     "description": "Aktiviere, oder deaktiviere den Ton, wenn du durstig bist."
+                },
+                "dryoutmessageenable": {
+                    "name": "Verdurstennachricht aktivieren",
+                    "description": "Aktiviere, oder deaktiviere die Chatnachricht, wenn du verdurstest."
+                },
+                "dryoutsoundenable": {
+                    "name": "VerdurstenSound  aktivieren",
+                    "description": "Aktiviere, oder deaktiviere den Ton, wenn du verdurstest."
                 }
             },
             "uploadtype": {
@@ -59,10 +67,10 @@
         },
         "commands": {
             "aequip": {
-                "usage": "§8 - §b /aequip <Wasser/Brot> {Anzahl} §8 -> §7Equipe dir automatisch Brot oder Wasser",
+                "usage": "§8 - §b /aequip <Wasser/Brot/Suppe> {Anzahl} §8 -> §7Equipe dir automatisch Brot, Wasser oder Suppe.",
                 "error": {
                     "number": "§cBitte gib eine Zahl an, die nicht größer als 5 und nicht kleiner als 1 ist.",
-                    "usage": "§8 - §b /aequip <Wasser/Brot> {Anzahl}"
+                    "usage": "§8 - §b /aequip <Wasser/Brot/Suppe> {Anzahl}"
                 }
             },
             "brot": {
@@ -117,7 +125,7 @@
                     "main": "§8- §b/hv §8-> §7synchronisiere die Hausverbote mit dem Client.",
                     "list": "§8- §b/hv list §8-> §7Gibt eine Liste mit allen Spielern aus, die Hausverbot haben.",
                     "namecheck": "§8- §b/hv namecheck §8-> §7Überprüft ob es Fehler bei den eingetragenen Spielernamen gibt.",
-                    "info": "§8- b/hv info <User> §8-> §7Zeigt die Hausverbot-Infos zum Spieler.",
+                    "info": "§8- §b/hv info <User> §8-> §7Zeigt die Hausverbot-Infos zum Spieler.",
                     "add": "§8- §b/hv add <User> §8-> §7Trägt ein Hausverbot ein."
                 },
                 "namecheck": {
@@ -240,6 +248,14 @@
                 "weekstolongrank4": "§cMit Rang 4 darfst du maximal 4 Wochen vergeben!"
             }
         },
-        "update": "§8[§6Kirche-Plus§8] §eEs wurde ein Update gefunden. Lade dir dieses auf der KirchePlus-Mod Website herunter!"
+        "update": "§8[§6Kirche-Plus§8] §eEs wurde ein Update gefunden. Lade dir dieses auf der KirchePlus-Mod Website herunter!",
+        "drink": {
+            "title": "§bDu bist durstig!",
+            "subtitle": "§cDu solltest etwas trinken"
+        },
+        "dryout": {
+            "title": "§cDU VERDURSTEST!",
+            "subtitle": "§cTRINK SCHNELL ETWAS!!!!!"
+        }
     }
 }
