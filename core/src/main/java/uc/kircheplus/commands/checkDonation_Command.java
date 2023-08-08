@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import net.labymod.api.client.chat.command.Command;
 import uc.kircheplus.KirchePlus;
+import uc.kircheplus.events.tabcompletion;
 import uc.kircheplus.utils.PlayerCheck;
 import uc.kircheplus.utils.SpenderInfo;
 import uc.kircheplus.utils.SpenderUtils;
@@ -117,19 +118,16 @@ public class checkDonation_Command extends Command {
     }
     @Override
     public List<String> complete(String[] arguments) {
+        List<String> tabCompletions = new ArrayList<>();
         if (arguments.length == 0) {
-            List<String> tabCompletions = new ArrayList<>();
             tabCompletions.add("updatenames");
             return tabCompletions;
         }
         if(arguments.length == 1){
-            if(!arguments[0].endsWith(" ")){
-                List<String> tabCompletions = new ArrayList<>();
-                String updatenames = "updatenames";
-                if(updatenames.startsWith(arguments[0].toLowerCase())){
-                    tabCompletions.add("updatenames");
-                }
-                return tabCompletions;
+            if(tabcompletion.spaces > 1) return Collections.emptyList();
+            String updatenames = "updatenames";
+            if(updatenames.startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add("updatenames");
             }
         }
 

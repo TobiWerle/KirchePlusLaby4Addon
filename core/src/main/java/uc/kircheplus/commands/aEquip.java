@@ -4,6 +4,7 @@ import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import uc.kircheplus.KirchePlus;
+import uc.kircheplus.events.tabcompletion;
 import uc.kircheplus.utils.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,15 +106,15 @@ public class aEquip extends Command {
 
     @Override
     public List<String> complete(String[] arguments) {
+        List<String> tabCompletions = new ArrayList<>();
         if (arguments.length == 0) {
-            List<String> tabCompletions = new ArrayList<>();
             tabCompletions.add("brot");
             tabCompletions.add("wasser");
             tabCompletions.add("suppe");
             return tabCompletions;
         }
         if(arguments.length == 1){
-            List<String> tabCompletions = new ArrayList<>();
+            if(tabcompletion.spaces > 1) return Collections.emptyList();
             String brot = "brot";
             String wasser = "wasser";
             String suppe = "suppe";

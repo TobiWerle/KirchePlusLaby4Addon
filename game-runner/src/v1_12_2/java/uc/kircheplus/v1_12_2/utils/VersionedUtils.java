@@ -24,6 +24,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.text.TextComponentString;
 import uc.kircheplus.KirchePlus;
 import uc.kircheplus.utils.Utils;
 
@@ -58,6 +59,11 @@ public class VersionedUtils extends Utils {
     @Override
     public void addMessageToChatHistory(String message){
         Minecraft.getMinecraft().ingameGUI.getChatGUI().addToSentMessages(message);
+    }
+
+    @Override
+    public void printChatMessageWithOptionalDeletion(String message){
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(message), 1);
     }
 
     @Override

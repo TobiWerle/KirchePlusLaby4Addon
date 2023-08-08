@@ -5,10 +5,13 @@ import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import net.labymod.api.Laby;
 import net.labymod.api.client.chat.command.Command;
 import uc.kircheplus.KirchePlus;
 import uc.kircheplus.events.PrefixHandler;
+import uc.kircheplus.events.tabcompletion;
 import uc.kircheplus.utils.Bread_ADD;
 import uc.kircheplus.utils.Brot_User;
 import uc.kircheplus.utils.TabellenMethoden;
@@ -107,6 +110,79 @@ public class Brot_Command extends Command {
             }
         }
         return true;
+    }
+
+    @Override
+    public List<String> complete(String[] arguments) {
+        List<String> tabCompletions = new ArrayList<>();
+        if (arguments.length == 0) {
+            tabCompletions.add("help");
+            tabCompletions.add("info");
+            tabCompletions.add("list");
+            tabCompletions.add("add");
+            return tabCompletions;
+        }
+
+        if(arguments.length == 1){
+            if(arguments[0].equalsIgnoreCase("info")) {
+                for(String names : PrefixHandler.BrotUser.keySet()) {
+                    tabCompletions.add(names);
+                }
+                return tabCompletions;
+            }
+
+            if(arguments[0].equalsIgnoreCase("add")) {
+                for (String playerName : KirchePlus.main.utils.getAllOnlinePlayers()) {
+                    tabCompletions.add(playerName);
+                }
+                return tabCompletions;
+            }
+
+            String help = "help";
+            String list = "list";
+            String info = "info";
+            String add = "add";
+            if(help.startsWith(arguments[0].toLowerCase())){
+                if(tabcompletion.spaces > 1) return Collections.emptyList();
+                tabCompletions.add("help");
+            }
+            if(list.startsWith(arguments[0].toLowerCase())){
+                if(tabcompletion.spaces > 1) return Collections.emptyList();
+                tabCompletions.add("list");
+            }
+            if(info.startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add("info");
+            }
+            if(add.startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add("add");
+            }
+            return tabCompletions;
+
+        }
+
+        if(arguments.length == 2){
+            if(arguments[0].equalsIgnoreCase("info")) {
+                if(tabcompletion.spaces > 2) return Collections.emptyList();
+                String start = arguments[1].toLowerCase();
+                for(String names : PrefixHandler.BrotUser.keySet()) {
+                    if(names.toLowerCase().startsWith(start)) {
+                        tabCompletions.add(names);
+                    }
+                }
+                return tabCompletions;
+            }
+
+            if(arguments[0].equalsIgnoreCase("add")) {
+                if(tabcompletion.spaces > 2) return Collections.emptyList();
+                for (String playerName : KirchePlus.main.utils.getAllOnlinePlayers()) {
+                    if (playerName.toLowerCase().startsWith(arguments[1].toLowerCase())) {
+                        tabCompletions.add(playerName);
+                    }
+                }
+                return tabCompletions;
+            }
+        }
+        return tabCompletions;
     }
 
 }

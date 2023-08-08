@@ -14,6 +14,7 @@ import uc.kircheplus.KirchePlus;
 import uc.kircheplus.automaticactivity.Handler;
 import uc.kircheplus.events.Displayname;
 import uc.kircheplus.events.PrefixHandler;
+import uc.kircheplus.events.tabcompletion;
 import uc.kircheplus.utils.HV_ADD;
 import uc.kircheplus.utils.HV_User;
 import uc.kircheplus.utils.PlayerCheck;
@@ -153,49 +154,54 @@ public class hv_Command extends Command {
 
     @Override
     public List<String> complete(String[] arguments) {
+        List<String> tabCompletions = new ArrayList<>();
         if (arguments.length == 0) {
-            List<String> tabCompletions = new ArrayList<>();
             tabCompletions.add("list");
             tabCompletions.add("namecheck");
             tabCompletions.add("info");
             tabCompletions.add("add");
             return tabCompletions;
         }
+
         if(arguments.length == 1){
-            if(!arguments[0].endsWith(" ")){
-                List<String> tabCompletions = new ArrayList<>();
-                String list = "list";
-                String namecheck = "namecheck";
-                String info = "info";
-                String add = "add";
-                if(list.startsWith(arguments[0].toLowerCase())){
-                    tabCompletions.add("list");
-                }
-                if(namecheck.startsWith(arguments[0].toLowerCase())){
-                    tabCompletions.add("namecheck");
-                }
-                if(info.startsWith(arguments[0].toLowerCase())){
-                    tabCompletions.add("info");
-                }
-                if(add.startsWith(arguments[0].toLowerCase())){
-                    tabCompletions.add("add");
+            if(arguments[0].equalsIgnoreCase("info")) {
+                for(String names : PrefixHandler.HVs.keySet()) {
+                    tabCompletions.add(names);
                 }
                 return tabCompletions;
             }
-        }
 
-        if(arguments[0].equalsIgnoreCase("add")) {
-            List<String> tabCompletions = new ArrayList<>();
-            for (String playerName : KirchePlus.main.utils.getAllOnlinePlayers()) {
-                if (playerName.toLowerCase().startsWith(arguments[1].toLowerCase())) {
-                    tabCompletions.add(playerName);
+            if(arguments[0].equalsIgnoreCase("add")) {
+                for (String playerName : KirchePlus.main.utils.getAllOnlinePlayers()) {
+                        tabCompletions.add(playerName);
                 }
+                return tabCompletions;
+            }
+
+            String list = "list";
+            String namecheck = "namecheck";
+            String info = "info";
+            String add = "add";
+            if(list.startsWith(arguments[0].toLowerCase())){
+                if(tabcompletion.spaces > 1) return Collections.emptyList();
+                tabCompletions.add("list");
+            }
+            if(namecheck.startsWith(arguments[0].toLowerCase())){
+                if(tabcompletion.spaces > 1) return Collections.emptyList();
+                tabCompletions.add("namecheck");
+            }
+            if(info.startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add("info");
+            }
+            if(add.startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add("add");
             }
             return tabCompletions;
         }
 
-        if(arguments[0].equalsIgnoreCase("info")) {
-            List<String> tabCompletions = new ArrayList<>();
+        if(arguments.length == 2){
+            if(arguments[0].equalsIgnoreCase("info")) {
+                if(tabcompletion.spaces > 2) return Collections.emptyList();
                 String start = arguments[1].toLowerCase();
                 for(String names : PrefixHandler.HVs.keySet()) {
                     if(names.toLowerCase().startsWith(start)) {
@@ -203,8 +209,19 @@ public class hv_Command extends Command {
                     }
                 }
                 return tabCompletions;
-        }
+            }
 
+            if(arguments[0].equalsIgnoreCase("add")) {
+                if(tabcompletion.spaces > 2) return Collections.emptyList();
+                for (String playerName : KirchePlus.main.utils.getAllOnlinePlayers()) {
+                    if (playerName.toLowerCase().startsWith(arguments[1].toLowerCase())) {
+                        tabCompletions.add(playerName);
+                    }
+                }
+                return tabCompletions;
+            }
+        }
         return Collections.emptyList();
     }
+
 }

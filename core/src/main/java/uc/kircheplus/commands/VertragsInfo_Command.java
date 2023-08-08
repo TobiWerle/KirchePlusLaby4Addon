@@ -14,7 +14,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 import net.labymod.api.client.chat.command.Command;
 import uc.kircheplus.KirchePlus;
-import uc.kircheplus.events.PrefixHandler;
+import uc.kircheplus.events.tabcompletion;
 import uc.kircheplus.utils.FactionContract;
 import uc.kircheplus.utils.Utils;
 
@@ -39,7 +39,7 @@ public class VertragsInfo_Command extends Command {
             if (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("list")) {
 
                 displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.title"));
-                for (FactionContract factionContract : KirchePlus.main.FactionContracs) {
+                for (FactionContract factionContract : KirchePlus.main.factionContracts) {
                     String name = factionContract.getFaction();
                     String contract = "§4✖";
                     if (factionContract.isContract()) {
@@ -54,7 +54,7 @@ public class VertragsInfo_Command extends Command {
                 return true;
             }
 
-            for (FactionContract factionContract : KirchePlus.main.FactionContracs) {
+            for (FactionContract factionContract : KirchePlus.main.factionContracts) {
                 String name = factionContract.getFaction();
                 if (name.toLowerCase().startsWith(args[0].toLowerCase())) {
                     String contract = "§4✖";
@@ -98,9 +98,12 @@ public class VertragsInfo_Command extends Command {
             return tabCompletions;
         }
 
-        for(String faction : getFactions()){
-            if(faction.toLowerCase().startsWith(arguments[0].toLowerCase())){
-                tabCompletions.add(faction);
+        if(arguments.length == 1){
+            if(tabcompletion.spaces > 1) return Collections.emptyList();
+            for(String faction : getFactions()){
+                if(faction.toLowerCase().startsWith(arguments[0].toLowerCase())){
+                    tabCompletions.add(faction);
+                }
             }
         }
         return tabCompletions;
@@ -108,7 +111,7 @@ public class VertragsInfo_Command extends Command {
 
     public static void loadFactionInfoJSON() {
         try {
-            KirchePlus.main.FactionContracs.clear();
+            KirchePlus.main.factionContracts.clear();
 
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(getJson());
@@ -166,7 +169,7 @@ public class VertragsInfo_Command extends Command {
 
     public ArrayList<String> getFactions() {
         ArrayList<String> list = new ArrayList<>();
-        for (FactionContract faction : KirchePlus.main.FactionContracs) {
+        for (FactionContract faction : KirchePlus.main.factionContracts) {
             list.add(faction.getFaction());
         }
         return list;

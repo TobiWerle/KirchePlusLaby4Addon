@@ -40,22 +40,18 @@ public class KirchePlus extends LabyAddon<config> {
 
     //TODO FOR LATER::
 
-
     //TODO TEST IT
 
     //todo done
-    // aEquip: add Suppe!!!!
-    // add sendchatmessage alternative
-    // FIX MARRY RP ACTIVITY NOT WORKING AT NAMES SOMETIMES
-    // FIX OTHER ADDONS OVERRIDE COMMANDS
-    // fix upload Token in Config not set
-    // fix translation error at /hv help
+    // Change Version logic
+    // add at TabCompletion this "sendoptinalmessagedelete" dings da mit den Tab Möglichkeiten :D
+    // Change Tab-Completion logic
 
     public static KirchePlus main;
-    public String VERSION = "3.2b";
+    public String VERSION = "3.2c";
     public ArrayList<SpenderInfo> spender = new ArrayList<>();
     public HashMap<Activity_User, Integer> totalActivity = new HashMap<>();
-    public ArrayList<FactionContract> FactionContracs = new ArrayList<>();
+    public ArrayList<FactionContract> factionContracts = new ArrayList<>();
     public List<Command> commands = new ArrayList<>();
 
     /* Versioned Classes */
@@ -66,7 +62,6 @@ public class KirchePlus extends LabyAddon<config> {
     public ActivityGUI activityGUI;
     public GD_GUI gd_gui;
     public HVADD_GUI hv_gui;
-
 
 
     @Override

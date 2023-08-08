@@ -34,7 +34,7 @@ public class UpdateCheck {
     }
 
     private static String getVersion() throws IOException {
-        URL url = new URL("https://kircheplus-mod.de/api/version.txt");
+        URL url = new URL("https://kircheplus-mod.de/api/labyversion.txt");
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         con.setSSLSocketFactory(KirchePlus.main.utils.socketFactory());
 

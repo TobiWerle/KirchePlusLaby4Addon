@@ -25,6 +25,6 @@ public class FactionContract {
         this.contract = contract;
         this.conditions = conditions;
 
-        KirchePlus.main.FactionContracs.add(this);
+        KirchePlus.main.factionContracts.add(this);
     }
 }

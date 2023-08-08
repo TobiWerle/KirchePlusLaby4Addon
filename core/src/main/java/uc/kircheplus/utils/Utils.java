@@ -37,6 +37,10 @@ public abstract class Utils {
 
     }
 
+    public void printChatMessageWithOptionalDeletion(String message){
+
+    }
+
     public SSLSocketFactory socketFactory() {
         return null;
     }
@@ -60,12 +64,12 @@ public abstract class Utils {
     }
 
     public static String buildString(String[] strings){
-        String resultString = " ";
+        String resultString = "";
         if(strings.length == 0){
             return "";
         }
         for (int i = 0; i < strings.length; i++) {
-            resultString += strings[i];
+            resultString += strings[i]+" ";
         }
         return resultString;
     }
