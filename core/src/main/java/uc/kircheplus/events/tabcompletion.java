@@ -15,6 +15,8 @@ import java.util.List;
 
 public class tabcompletion {
     private List<String> lastargs = new ArrayList<>();
+    private String lastTyped = "";
+    private String lastComplete = "";
     public static Integer spaces = 0;
     @Subscribe
     public void onKeyPressEvent(KeyEvent e) {
@@ -26,13 +28,13 @@ public class tabcompletion {
                         if(typedCommand == null || !typedCommand.startsWith("/")) return;
                         String prefix = typedCommand.replace("/","").split(" ")[0];
                         if(!typedCommand.contains(" ")) return;
-                        spaces = typedCommand.split(" ").length;
+                        spaces = (int)typedCommand.chars().filter(c -> c == (int) ' ').count();
                         for(Command cmd : KirchePlus.main.commands){
                             if(prefix.equalsIgnoreCase(cmd.getPrefix()) || Arrays.stream(cmd.getAliases()).anyMatch(name -> name.equalsIgnoreCase(prefix))){
                                 String[] arguments = Arrays.copyOfRange(typedCommand.split(" "), 1, typedCommand.split(" ").length);
+                                String[] arguments2 = Arrays.copyOfRange(typedCommand.split(" "), 1, typedCommand.split(" ").length);
 
                                 System.out.println("Arguments : " +Utils.buildString(arguments));
-
                                 String[] withoutlast = new String[]{};
                                 if(typedCommand.endsWith(" ")){
                                     withoutlast = Arrays.copyOfRange(arguments, 0, arguments.length);
@@ -41,21 +43,42 @@ public class tabcompletion {
                                     withoutlast = Arrays.copyOfRange(arguments, 0, arguments.length-1);
                                     System.out.println("Debug withoutlast: "+Utils.buildString(withoutlast));
                                 }
+                                String lastTypedArg = "";
 
-                                if(lastargs.size() != 0 && arguments.length != 0){
-                                    String lastTypedArg = arguments[arguments.length-1];
-                                    if(lastargs.contains(lastTypedArg)) {
-                                        arguments = Utils.removeStringFromArray(arguments, lastTypedArg);
+
+                                List<String> commandArgs;
+                                if(lastTyped.length() != 0){
+                                    System.out.println("Debug 1");
+                                    if(lastargs.size() != 0 && arguments2.length != 0){
+                                        System.out.println("Debug 2");
+                                        lastTypedArg = arguments2[arguments2.length-1];
+                                        if(lastargs.contains(lastTypedArg)) {
+                                            System.out.println("Debug 3");
+                                            arguments2 = Utils.removeStringFromArray(arguments2, lastTypedArg);
+                                        }
                                     }
+                                    commandArgs = cmd.complete(Utils.addStringToArray(arguments2, lastTyped));
 
+                                }else{
+                                    if(lastargs.size() != 0 && arguments.length != 0){
+                                        lastTypedArg = arguments[arguments.length-1];
+                                        if(lastargs.contains(lastTypedArg)) {
+                                            arguments = Utils.removeStringFromArray(arguments, lastTypedArg);
+                                        }
+
+                                    }
+                                    commandArgs = cmd.complete(arguments);
                                 }
 
-                                List<String> commandArgs = cmd.complete(arguments);
-                                String output = "";
-                                for(String s : commandArgs){
-                                    output = output + s;
+
+                                if(lastTyped.length() == 0 && arguments2.length != 0){
+                                    if(!typedCommand.endsWith(" ")) {
+                                        if(lastComplete.length() == 0) {
+                                            lastTyped = arguments2[arguments2.length - 1];
+                                            System.out.println("Last typed: " + lastTyped);
+                                        }
+                                    }
                                 }
-                                System.out.println("CommandArgsGuess: " + output);
 
                                 if(commandArgs.size() == 1){
                                     String guessArg = commandArgs.get(0);
@@ -70,6 +93,7 @@ public class tabcompletion {
                                             Laby.references().chatExecutor().suggestCommand("/"+prefix + " " + Utils.buildString(withoutlast) + arg);
                                             sendGuesses(commandArgs, arg);
                                             lastargs.add(arg);
+                                            lastComplete = arg;
                                             break;
                                         }
                                     }
@@ -81,6 +105,8 @@ public class tabcompletion {
                     }else{
                         lastargs.clear();
                         spaces = 0;
+                        lastTyped = "";
+                        lastComplete = "";
                     }
                 }
             }

@@ -114,7 +114,7 @@ public class aEquip extends Command {
             return tabCompletions;
         }
         if(arguments.length == 1){
-            if(tabcompletion.spaces > 1) return Collections.emptyList();
+            if(tabcompletion.spaces != 1) return Collections.emptyList();
             String brot = "brot";
             String wasser = "wasser";
             String suppe = "suppe";

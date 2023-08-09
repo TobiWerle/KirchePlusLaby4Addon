@@ -124,12 +124,13 @@ public class checkDonation_Command extends Command {
             return tabCompletions;
         }
         if(arguments.length == 1){
-            if(tabcompletion.spaces > 1) return Collections.emptyList();
+            if(tabcompletion.spaces != 1) return Collections.emptyList();
             String updatenames = "updatenames";
             if(updatenames.startsWith(arguments[0].toLowerCase())){
                 tabCompletions.add("updatenames");
             }
         }
+
 
         return Collections.emptyList();
     }

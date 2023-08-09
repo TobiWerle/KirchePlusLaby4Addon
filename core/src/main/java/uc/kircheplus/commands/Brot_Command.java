@@ -125,6 +125,7 @@ public class Brot_Command extends Command {
 
         if(arguments.length == 1){
             if(arguments[0].equalsIgnoreCase("info")) {
+                if(tabcompletion.spaces != 2) return Collections.emptyList();
                 for(String names : PrefixHandler.BrotUser.keySet()) {
                     tabCompletions.add(names);
                 }
@@ -132,6 +133,7 @@ public class Brot_Command extends Command {
             }
 
             if(arguments[0].equalsIgnoreCase("add")) {
+                if(tabcompletion.spaces != 2) return Collections.emptyList();
                 for (String playerName : KirchePlus.main.utils.getAllOnlinePlayers()) {
                     tabCompletions.add(playerName);
                 }
@@ -162,7 +164,7 @@ public class Brot_Command extends Command {
 
         if(arguments.length == 2){
             if(arguments[0].equalsIgnoreCase("info")) {
-                if(tabcompletion.spaces > 2) return Collections.emptyList();
+                if(tabcompletion.spaces != 2) return Collections.emptyList();
                 String start = arguments[1].toLowerCase();
                 for(String names : PrefixHandler.BrotUser.keySet()) {
                     if(names.toLowerCase().startsWith(start)) {
@@ -173,7 +175,7 @@ public class Brot_Command extends Command {
             }
 
             if(arguments[0].equalsIgnoreCase("add")) {
-                if(tabcompletion.spaces > 2) return Collections.emptyList();
+                if(tabcompletion.spaces != 2) return Collections.emptyList();
                 for (String playerName : KirchePlus.main.utils.getAllOnlinePlayers()) {
                     if (playerName.toLowerCase().startsWith(arguments[1].toLowerCase())) {
                         tabCompletions.add(playerName);
