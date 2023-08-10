@@ -14,6 +14,7 @@ import uc.kircheplus.commands.GDEinteilung_Command;
 import uc.kircheplus.commands.SaveActivity_Command;
 import uc.kircheplus.commands.VertragsInfo_Command;
 import uc.kircheplus.commands.aEquip;
+import uc.kircheplus.commands.aEvent_Command;
 import uc.kircheplus.commands.checkDonation_Command;
 import uc.kircheplus.commands.hv_Command;
 import uc.kircheplus.commands.topActivity_Command;
@@ -108,6 +109,7 @@ public class KirchePlus extends LabyAddon<config> {
         register(new hv_Command());
         register(new Brot_Command());
         register(new topActivity_Command());
+        register(new aEvent_Command());
     }
 
     private void register(Command cmd) {
