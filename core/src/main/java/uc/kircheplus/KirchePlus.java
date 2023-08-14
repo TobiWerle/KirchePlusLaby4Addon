@@ -45,16 +45,9 @@ public class KirchePlus extends LabyAddon<config> {
     //TODO TEST IT
 
     //todo done
-    // fix a equip bug, not stop at "du bist nicht am Equippunkt"
-    // sort list at /brot list
-    // add messages for /aEvent
-    // add command /aEvent -> Sende Ankündigungsnachricht in den Discord
-    // fix tab comletion again
-
 
     //TODO PORT TO FORGE
     // sort list at /brot list
-    // add command /aEvent -> Sende Ankündigungsnachricht in den Discord
 
     public static KirchePlus main;
     public String VERSION = "3.3a";
