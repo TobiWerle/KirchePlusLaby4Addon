@@ -44,9 +44,6 @@ public class SaveActivity_Command extends Command {
             }
         }
 
-        if (args.length != 1) {
-            return true;
-        }
         Handler handler = new Handler();
         try {
             image = KirchePlus.main.utils.makeScreen();
@@ -91,7 +88,7 @@ public class SaveActivity_Command extends Command {
             Handler.blessPage = true;
         }
         if (args[0].equalsIgnoreCase("marry")) {
-            Handler.topic = args[1] + "&" + args[2];
+            Handler.topic = args[1] + " & " + args[2];
             Handler.marryPage = true;
         }
         Handler.openGUI = true;

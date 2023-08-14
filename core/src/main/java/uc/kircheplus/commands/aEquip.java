@@ -7,7 +7,6 @@ import uc.kircheplus.KirchePlus;
 import uc.kircheplus.events.tabcompletion;
 import uc.kircheplus.utils.Utils;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -138,7 +137,7 @@ public class aEquip extends Command {
         if (!enabled) {
             return;
         }
-        String msg = e.message().toString();
+        String msg = e.chatMessage().getPlainText();
         if (msg.contains("Du bist nicht am Equip-Punkt deiner Fraktion.")) {
             enabled = false;
         }
@@ -153,6 +152,7 @@ public class aEquip extends Command {
                 Thread.sleep(750);
                 amount--;
                 if (amount > 0) {
+                    if(!enabled)return;
                     KirchePlus.main.utils.sendChatMessage("/equip");
                     equip();
                 } else {

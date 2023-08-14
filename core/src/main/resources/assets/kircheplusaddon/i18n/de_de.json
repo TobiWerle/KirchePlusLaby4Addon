@@ -195,6 +195,21 @@
                     "noconditions": "§f   Konditionen: §cKeine",
                     "factionnotexists": "§cEs wurde keine Fraktion mit diesem Namen gefunden!"
                 }
+            },
+            "aevent": {
+                "usage": "§8 - §b /aevent <Event> <Uhrzeit (20:15)> §8 -> §7Sende eine Event Ankündigung in den Discord.",
+                "error": {
+                    "nonevent": "§cBitte gebe ein gültiges Event an. §7(§8SHG§7, §8KK§7, §8JGA§7, §8Tafel§7, §8Spendenevent§7, §8Beichtevent§7)",
+                    "invalidtime": "§cBitte gebe die Zeit im richtigen Format an. §8Format§7: §aHH:MM"
+                },
+                "apiresponse": {
+                    "auth": "§cDein Upload Token ist abgelaufen oder ungültig.",
+                    "event": "§cDas angegebene Event existiert nicht!",
+                    "error": "§cEs ist ein unerwarteter Fehler aufgetreten!",
+                    "cooldown": "§cDu kannst nur alle 10 Minuten ein Event ankündigen!",
+                    "notamember": "§cDu bist kein Member der Fraktion!"
+                },
+                "sended": "§aDas Event §7%s §awurde im Discord angekündigt!"
             }
         },
         "activity": {

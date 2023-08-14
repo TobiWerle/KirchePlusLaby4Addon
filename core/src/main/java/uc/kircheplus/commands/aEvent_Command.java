@@ -4,8 +4,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.labymod.api.Laby;
 import net.labymod.api.client.chat.command.Command;
+import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.event.ClickEvent;
+import net.labymod.api.client.component.event.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 import uc.kircheplus.KirchePlus;
+import uc.kircheplus.utils.Utils;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -26,20 +30,42 @@ public class aEvent_Command extends Command {
         if(!CommandBypass.bypass)return true;
         CommandBypass.bypass = false;
         if(args.length != 2){
-            //send help
-            //usage : /aEvent <event> <time(00:00)>
+            KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.usage"));
             return true;
         }
         String event = args[0];
         String time = args[1];
         if(!isEvent(event)){
-            //send notevent
+            KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.error.nonevent"));
+            return true;
         }
         if(!isTimeValid(time)){
-            //send invalidTIme
+            KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.error.invalidtime"));
+            return true;
         }
-        System.out.println(sendEventNotifier(event,time));
 
+
+        String token = KirchePlus.main.configuration().kircheplustoken().get();
+        String member = Laby.labyAPI().minecraft().getClientPlayer().getName();
+
+
+        Thread thread = new Thread(() -> {
+            String response = sendEventNotifier(event, time, token, member);
+            if(response.equals("complete")){
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.sended", event));
+            }else if(response.equals("auth error")){
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.apiresponse.auth"));
+            }else if(response.equals("event error")){
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.apiresponse.event"));
+            }else if(response.equals("Error")){
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.apiresponse.error"));
+            }else if(response.equals("cooldown")){
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.apiresponse.cooldown"));
+            }else if(response.equals("not a member")){
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.apiresponse.notamember"));
+            }
+        });
+        thread.start();
         return true;
     }
 
@@ -47,6 +73,7 @@ public class aEvent_Command extends Command {
     public List<String> complete(String[] arguments) {
         List<String> tabCompletions = new ArrayList<>();
         if (arguments.length == 0) {
+
             tabCompletions.add("SHG");
             tabCompletions.add("KK");
             tabCompletions.add("JGA");
@@ -71,7 +98,7 @@ public class aEvent_Command extends Command {
     
     private boolean isTimeValid(String s){
         String[] time = s.split(":");
-        if(time.length != 2){
+        if(time.length != 2 && time[0].length() != 2 && time[1].length() != 2){
             return false;
         }
         try {
@@ -84,15 +111,15 @@ public class aEvent_Command extends Command {
         }
     }
 
-    protected String sendEventNotifier(String event, String time){
+    protected String sendEventNotifier(String event, String time, String token, String member){
         try {
-            String url = "http://152.89.107.212:8082/serverapi?";
+            String url = String.format("http://152.89.107.212:8082/serverapi?token=%s&event=%s&member=%s&time=%s",
+                token,
+                event,
+                member,
+                time);
 
-            url = url + "token=" + KirchePlus.main.configuration().kircheplustoken().get();
-            url = url + "&event=" + event;
-            url = url + "&member=" + Laby.labyAPI().minecraft().getClientPlayer().getName();
-            url = url + "&time=" + time;
-
+            System.out.println(url);
             StringBuilder result = new StringBuilder();
             URL URL = new URL(url); //url
             HttpURLConnection conn = (HttpURLConnection) URL.openConnection();
@@ -109,5 +136,17 @@ public class aEvent_Command extends Command {
         } catch (Exception ignored) {
             return null;
         }
+    }
+
+
+    public Component setCommand(Component message, String activityCommand) {
+        Component activityMessage = message.copy();
+        activityMessage.clickEvent(ClickEvent.suggestCommand(""));//hier den fertigen Befehl einfügen!
+            // Wenn er Chat nicht öffnet, einfach anders überlegen. Beispiel: ClickChat Event oder so
+
+        String hovertext = Utils.translateAsString("kircheplusaddon.activity.chat.hovertext");//Andere Nachricht!
+        activityMessage.hoverEvent(HoverEvent.showText(Component.text(hovertext)));
+        activityMessage.append(Component.text("§9 {⬆}"));
+        return activityMessage;
     }
 }

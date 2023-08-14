@@ -41,15 +41,23 @@ public class KirchePlus extends LabyAddon<config> {
 
     //TODO FOR LATER::
 
+
     //TODO TEST IT
 
     //todo done
-    // Change Version logic
-    // add at TabCompletion this "sendoptinalmessagedelete" dings da mit den Tab Möglichkeiten :D
-    // Change Tab-Completion logic
+    // fix a equip bug, not stop at "du bist nicht am Equippunkt"
+    // sort list at /brot list
+    // add messages for /aEvent
+    // add command /aEvent -> Sende Ankündigungsnachricht in den Discord
+    // fix tab comletion again
+
+
+    //TODO PORT TO FORGE
+    // sort list at /brot list
+    // add command /aEvent -> Sende Ankündigungsnachricht in den Discord
 
     public static KirchePlus main;
-    public String VERSION = "3.2c";
+    public String VERSION = "3.3a";
     public ArrayList<SpenderInfo> spender = new ArrayList<>();
     public HashMap<Activity_User, Integer> totalActivity = new HashMap<>();
     public ArrayList<FactionContract> factionContracts = new ArrayList<>();

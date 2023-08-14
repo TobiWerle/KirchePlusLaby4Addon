@@ -195,6 +195,21 @@
                     "noconditions": "§f   Conditions: §cNone",
                     "factionnotexists": "§cNo faction found with this name!"
                 }
+            },
+            "aevent": {
+                "usage": "§8 - §b /aevent <Event> <Time (20:15)> §8 -> §7Send an event announcement to Discord.",
+                "error": {
+                    "nonevent": "§cPlease enter a valid event. §7(§8SHG§7, §8KK§7, §8JGA§7, §8Tafel§7, §8Spendenevent§7, §8Beichtevent§7)",
+                    "invalidtime": "§cPlease enter the time in the correct format. §8Format§7: §aHH:MM"
+                },
+                "apiresponse": {
+                    "auth": "§cYour upload token has expired or is invalid.",
+                    "event": "§cThe specified event does not exist!",
+                    "error": "§cAn unexpected error occurred!",
+                    "cooldown": "§cYou can only announce an event every 10 minutes!",
+                    "notamember": "§cYou are not a member of the faction!"
+                },
+                "sended": "§aThe event §7%s §awas announced in Discord!"
             }
         },
         "activity": {

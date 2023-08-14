@@ -1,10 +1,12 @@
 package uc.kircheplus.commands;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import net.labymod.api.Laby;
@@ -54,27 +56,25 @@ public class Brot_Command extends Command {
                 displayMessage(Utils.translateAsString("kircheplusaddon.commands.brot.title"));
 
                 ArrayList<String> online = new ArrayList<String>();
+                ArrayList<String> offline = new ArrayList<String>();
+                ArrayList<String> expired = new ArrayList<String>();
 
                 for (String name : PrefixHandler.BrotUser.keySet()) {
-                    if (!KirchePlus.main.utils.isOnline(name)) {
-                        Brot_User user = PrefixHandler.BrotUser.get(name);
-                        String color = " §a";
-                        if (!TabellenMethoden.isSameDay(user.getDatum())) {
-                            color = " §c";
-                        }
-                        displayMessage("§8 - " + name + color + user.getDatum());
-                    } else {
-                        online.add(name);
-                    }
-                }
-                for (String name : online) {
                     Brot_User user = PrefixHandler.BrotUser.get(name);
-                    String color = " §a";
                     if (!TabellenMethoden.isSameDay(user.getDatum())) {
-                        color = " §c";
+                        expired.add(name);
+                    }else
+                    if(KirchePlus.main.utils.isOnline(name)){
+                        online.add(name);
+                    }else {
+                        offline.add(name);
                     }
-                    displayMessage(color + " - " + name + color + user.getDatum());
                 }
+                expired.forEach(name -> displayMessage("§c - " + name + " - §c" + PrefixHandler.BrotUser.get(name).getDatum()));
+                offline.forEach(name -> displayMessage("§8 - " + name + " - §a" + PrefixHandler.BrotUser.get(name).getDatum()));
+                online.forEach(name -> displayMessage("§a - " + name + " - §a" + PrefixHandler.BrotUser.get(name).getDatum()));
+
+
             }
         }
         if (args.length == 2) {
