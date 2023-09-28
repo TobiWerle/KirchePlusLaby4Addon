@@ -40,7 +40,10 @@ import uc.kircheplus.utils.Utils;
 public class KirchePlus extends LabyAddon<config> {
 
     //TODO FOR LATER::
-
+    // Remove englisch translation
+    // add /aequip give <Vertragspartner>
+    // remove own at disable owngmail
+    // add /hv remove <Name>
 
     //TODO TEST IT
 

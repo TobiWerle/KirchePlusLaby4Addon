@@ -1,0 +1,242 @@
+{
+    "kircheplusaddon": {
+        "settings": {
+            "name": "ChurchPlus Addon",
+            "enabled": {
+                "name": "Enabled",
+                "description": "Enable or disable the entire addon."
+            },
+            "hv": {
+                "name": "Houseban Settings",
+                "description": "Settings for housebans.",
+                "hvenable": {
+                    "name": "Houseban enable",
+                    "description": "Enable or disable the display of the houseban status next to player names."
+                },
+                "hvprefix": {
+                    "name": "Houseban prefix",
+                    "description": "Set the prefix for displaying players with housebans."
+                }
+            },
+            "bread": {
+                "name": "Breadlist Settings",
+                "description": "Settings for the breadlist.",
+                "breadenable": {
+                    "name": "Breadlist enable",
+                    "description": "Enable or disable the display of players on the breadlist next to their names."
+                },
+                "breadprefix": {
+                    "name": "Breadlist prefix",
+                    "description": "Set the prefix for displaying players on the breadlist."
+                }
+            },
+            "drink": {
+                "name": "Drink Settings",
+                "description": "Settings for warnings when thirsty.",
+                "drinkmessageenable": {
+                    "name": "Drink message enable",
+                    "description": "Enable or disable the chat message when you are thirsty."
+                },
+                "drinksoundenable": {
+                    "name": "Drink Sound enable",
+                    "description": "Enable or disable the sound when you are thirsty."
+                },
+                "dryoutmessageenable": {
+                    "name": "Dryout message enable",
+                    "description": "Enable or disable the chat message when you dry out."
+                },
+                "dryoutsoundenable": {
+                    "name": "Dryout Sound enable",
+                    "description": "Enable or disable the sound when you dry out"
+                }
+            },
+            "uploadtype": {
+                "name": "Uploadtype"
+            },
+            "owngmailenabled": {
+                "name": "OwnGmail enable"
+            },
+            "kircheplustoken": {
+                "name": "Upload Token"
+            },
+            "header": {
+                "addonsettings": {
+                    "name": "Addon Settings"
+                }
+            }
+        },
+        "commands": {
+            "aequip": {
+                "usage": "§8 - §b /aequip <Wasser/Brot/Suppe> {Anzahl} §8 -> §7Equip yourself automatically with Bread, Water or Soup",
+                "error": {
+                    "number": "§cPlease selct a number that is not higher than 5 and not lower than 1.",
+                    "usage": "§8 - §b /aequip <Water/Bread/Suppe> {Amount}"
+                }
+            },
+            "brot": {
+                "title": "§1[]§a========§7[§6Breadlist§7]§a========§1[]",
+                "sync": {
+                    "pending": "§7The bread list is being synchronized! This may take a few seconds!",
+                    "complete": "§bThe bread list has been synchronized!"
+                },
+                "help": {
+                    "main": "§8 - §b/brot §8-> §7Synchronize the bread list with the client..",
+                    "list": "§8 - §b/brot list §8-> §7Display a list of all players who have received bread.",
+                    "info": "§8 - §b/brot info <User> §8-> Display bread information for the player.",
+                    "add": "§8 - §b/brot add <User> §8-> Add a player to the breadlist.",
+                    "help": "§8 - §b/brot help §8-> Show the commands."
+                },
+                "info": {
+                    "receiver": "§3 -§6 Recipent:§a %s",
+                    "member": "§3 -§6 Member:§a %s",
+                    "date": "§e -§6 Date:"
+                },
+                "add": {
+                    "error": {
+                        "namelenght": "§cThe name must not be longer than 16 characters!",
+                        "nospace": "§cThere was not enough soace in the bread table!",
+                        "nopermission": "§cYou do not have permissions for the bread table"
+                    },
+                    "success": "§aThe Player has been added!"
+                }
+            },
+            "checkdonation": {
+                "updatenames": {
+                    "owngmailerror": "§cYou need to have ownGmail enabled in the config for this function!",
+                    "sync": {
+                        "pending": "§aChecking the donation list for errors. This may take some time.",
+                        "replaced": "§e %s §cwas replaced by %s §a.",
+                        "nochanges": "§aNo changed names found."
+                    }
+                },
+                "intask": "§cPlease wait a moment!",
+                "sync": "§7Die Loading the donations. This may take some time!",
+                "inpublic": " §7-§6 %s §bIs in the public channel :§6 %s §a(%s)",
+                "notpublic": " §7-§6 %s §aneeds to be added :§6 %s",
+                "nodonation": "§cNo entries found that need to be added!"
+            },
+            "hv": {
+                "title": "§1[]§3========§7[§bHouseban§7]§3========§1[]",
+                "sync": {
+                    "pending": "§7The house bans are being synchronized! This may take a few seconds!",
+                    "complete": "§bThe house bans have been synchronized!"
+                },
+                "help": {
+                    "main": "§8- §b/hv §8-> §7Synchronize the house bans with the client.",
+                    "list": "§8- §b/hv list §8-> §7Display a list of all players who have a house ban.",
+                    "namecheck": "§8- §b/hv namecheck §8-> §7Check for errors in the entered player names..",
+                    "info": "§8- §b/hv info <User> §8-> §7Show house ban information for the player.",
+                    "add": "§8- §b/hv add <User> §8-> §7Add a house ban."
+                },
+                "namecheck": {
+                    "sync": "§7NameCheck in progress! This may take a few seconds!",
+                    "nochanges": "§8- No player found with incorrect names found!",
+                    "changesfound": "§7- Players with name errors:"
+                },
+                "info": {
+                    "who": "§8- §7who:§c %s",
+                    "by": "§8- §7by:§c %s",
+                    "reason": "§8- §7reason:§c %s",
+                    "when": "§8- §7when:§c %s",
+                    "until": "§8- §7until:§c %s",
+                    "weeks": "weeks",
+                    "duration": "§8- §7duration:§c %s %s"
+                },
+                "add": {
+                    "error": "§cThe name must not be longer than 16 characters!",
+                    "nospace": "§c Not enough space found in the house ban table!",
+                    "success": "§aThe house ban has been added!",
+                    "nopermissions": "§cYou do not have permissions for the house ban table."
+                }
+            },
+            "saveactivty": {
+                "error": {
+                    "owngmail": "§cYou need to have ownGmail enabled in the config for this function!",
+                    "needtoken": "§cYou need a KirchePlus token for your current upload type.",
+                    "createtoken": "§cTo create a token, join the §9KirchePlus-Mod.de §cserver!",
+                    "serverdown": "§cThe connection to upload.KirchePlus-Mod.de cannot be established!",
+                    "fix": "§cReport this to a leader and switch to Imgur in the mod settings for now.",
+                    "tokeninvalid": "§cYour token has expired or is invalid.",
+                    "tokenfix": "§cCreate a new token on §9KirchePlus-Mod.de"
+                },
+                "screenupload": "§9Screenshot is being uploaded. This may take a while!",
+                "unexpected": "§cAn unexpected error occurred!"
+            },
+            "topactivity": {
+                "title": "§3=============Top-Activity=============",
+                "noactivitys": "§cNo members have entered activities yet!",
+                "places": {
+                    "1": "§7 ➜ §6 1. %s",
+                    "2": "§7 ➜ §6 2. %s",
+                    "3": "§7 ➜ §6 3. %s",
+                    "4": "§7 ➜ §6 4. %s",
+                    "5": "§7 ➜ §6 5. %s"
+                },
+                "ownactivity": {
+                    "youractivity": "§3===========Your Activity==============",
+                    "name": "§7 ➜ §bName: %s",
+                    "total": "§7 ➜ §btotal: %s",
+                    "roleplay": "§7 ➜ §bRoleplay: %s",
+                    "donations": "§7 ➜ §bdonations: %s",
+                    "placeholder": "§3===================================="
+                }
+            },
+            "contractinfo": {
+                "title": "§3 =============Contracts=============",
+                "help": {
+                    "info": "§8 - §b/contractinfo info §8-> §7Displays informations about contracts the church has.",
+                    "faction": "§8 - §b/contractinfo <faction> §8-> §7Displays detailed informations about the specific contract.",
+                    "main": "§8 - §b/contractinfo §8-> §7Displays this list and updates the list."
+                },
+                "info": {
+                    "contract": "§5   Contract: ",
+                    "placeholder": "§3 ====================================",
+                    "contracts": "§5   Contract: ",
+                    "noconditions": "§f   Conditions: §cNone",
+                    "factionnotexists": "§cNo faction found with this name!"
+                }
+            },
+            "aevent": {
+                "usage": "§8 - §b /aevent <Event> <Time (20:15)> §8 -> §7Send an event announcement to Discord.",
+                "error": {
+                    "nonevent": "§cPlease enter a valid event. §7(§8SHG§7, §8KK§7, §8JGA§7, §8Tafel§7, §8Spendenevent§7, §8Beichtevent§7)",
+                    "invalidtime": "§cPlease enter the time in the correct format. §8Format§7: §aHH:MM"
+                },
+                "apiresponse": {
+                    "auth": "§cYour upload token has expired or is invalid.",
+                    "event": "§cThe specified event does not exist!",
+                    "error": "§cAn unexpected error occurred!",
+                    "cooldown": "§cYou can only announce an event every 10 minutes!",
+                    "notamember": "§cYou are not a member of the faction!"
+                },
+                "sended": "§aThe event §7%s §awas announced in Discord!"
+            }
+        },
+        "activity": {
+            "chat": {
+                "hovertext": "§3Enter Activity"
+            },
+            "save": {
+                "enteractivity": "§bYour activity is being entered...",
+                "screenshoterror": "§cThe screenshot could not be uploaded! Please try again!",
+                "unexpected": "§cAn unexpected error occurred!",
+                "errornotfound": "§eThe error was not found. Restarting the game will fix this.",
+                "nexttry": "§eAttempting to enter the activity again...",
+                "noplacefound": "§cNot enough space found in your activity record!",
+                "success": "§bYour activity has been entered!"
+            },
+            "gui": {
+            }
+        },
+        "update": "§8[§6Kirche-Plus§8] §eAn update has been found. Download it from the KirchePlus-Mod website!",
+        "drink": {
+            "title": "§bYou are thirsty!",
+            "subtitle": "§cYou should drink something"
+        },
+        "dryout": {
+            "title": "§cYOU ARE DYING OF THIRST!",
+            "subtitle": "§cDRINK SOMEETHING FAST!!!!!"
+        }
+    }
+}
+
