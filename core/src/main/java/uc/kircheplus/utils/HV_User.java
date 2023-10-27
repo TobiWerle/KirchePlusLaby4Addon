@@ -2,6 +2,8 @@ package uc.kircheplus.utils;
 
 
 import uc.kircheplus.events.PrefixHandler;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class HV_User {
 
@@ -51,6 +53,19 @@ public class HV_User {
 
     public String getWeeks() {
         return weeks;
+    }
+    public Duration getDuration(){
+        if(getUntilDate().equalsIgnoreCase("Nie")) return null;
+        String[] s = getUntilDate().split("\\.");
+        int year = Integer.parseInt(s[2]);
+        int month = Integer.parseInt(s[1]);
+        int day = Integer.parseInt(s[0]);
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime until = LocalDateTime.of(year, month, day, 0, 0);
+
+        Duration diff = Duration.between(now, until);
+        return diff;
     }
 
 

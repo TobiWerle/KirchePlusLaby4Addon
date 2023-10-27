@@ -3,6 +3,7 @@ package uc.kircheplus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.models.addon.annotation.AddonMain;
@@ -26,11 +27,13 @@ import uc.kircheplus.customui.HVADD_GUI;
 import uc.kircheplus.events.Displayname;
 import uc.kircheplus.events.DrinkNotification;
 import uc.kircheplus.events.PrefixHandler;
+import uc.kircheplus.events.configChangeEvent;
 import uc.kircheplus.events.tabcompletion;
 import uc.kircheplus.soundhandler.sounds;
 import uc.kircheplus.utils.Activity_User;
 import uc.kircheplus.utils.FactionContract;
 import uc.kircheplus.utils.GUIController;
+import uc.kircheplus.utils.HV_ADD;
 import uc.kircheplus.utils.SpenderInfo;
 import uc.kircheplus.utils.TabellenMethoden;
 import uc.kircheplus.utils.UpdateCheck;
@@ -40,20 +43,22 @@ import uc.kircheplus.utils.Utils;
 public class KirchePlus extends LabyAddon<config> {
 
     //TODO FOR LATER::
-    // Remove englisch translation
-    // add /aequip give <Vertragspartner>
-    // remove own at disable owngmail
-    // add /hv remove <Name>
 
     //TODO TEST IT
 
     //todo done
+    //Duration at /hv info
+    // add /aequip give <Vertragspartner>
+    // remove own at disable owngmail and init own gmail at enable
+    // add /hv remove <Name>
+    // Remove englisch translation
+    // MAC Compatibility
 
     //TODO PORT TO FORGE
     // sort list at /brot list
 
     public static KirchePlus main;
-    public String VERSION = "3.3a";
+    public String VERSION = "3.4 pre beta 1";
     public ArrayList<SpenderInfo> spender = new ArrayList<>();
     public HashMap<Activity_User, Integer> totalActivity = new HashMap<>();
     public ArrayList<FactionContract> factionContracts = new ArrayList<>();
@@ -80,8 +85,6 @@ public class KirchePlus extends LabyAddon<config> {
         activityGUI = referenceStorage.activityGUI();
         gd_gui = referenceStorage.gD_GUI();
         hv_gui = referenceStorage.hvadD_GUI();
-
-        
         registerEvents();
         registerCommands();
         loadData();
@@ -102,6 +105,7 @@ public class KirchePlus extends LabyAddon<config> {
         this.registerListener(new DrinkNotification());
         this.registerListener(new CommandBypass());
         this.registerListener(new tabcompletion());
+        this.registerListener(new configChangeEvent());
     }
 
     private void registerCommands() {

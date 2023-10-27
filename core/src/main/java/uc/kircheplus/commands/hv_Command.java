@@ -2,6 +2,7 @@ package uc.kircheplus.commands;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -124,11 +125,12 @@ public class hv_Command extends Command {
                         displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.when", users.getFromDate()));
                         displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.until", users.getUntilDate()));
 
-                        String str = "";
-                        if (!users.getWeeks().equals("Permanent")) {
-                            str =  Utils.translateAsString("kircheplusaddon.commands.hv.info.weeks");
-                        }
-                        displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.duration", users.getWeeks(), str));
+                        //String str = "";
+                       // if (!users.getWeeks().equals("Permanent")) {
+                          //  str =  Utils.translateAsString("kircheplusaddon.commands.hv.info.weeks");
+                        //}
+                        //displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.duration", users.getWeeks(), str));
+                        displayUntil(users);
                         displayMessage("");
                         return true;
                     }
@@ -147,6 +149,14 @@ public class hv_Command extends Command {
                 HV_ADD.temp_Who = args[1];
                 Handler.openHVGUI = true;
             }
+            if (args[0].equalsIgnoreCase("remove")) {
+                if (args[1].length() > 16) {
+                    displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.remove.error"));
+                    return true;
+                }
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.remove.queue"));
+                HV_ADD.deleteHouseBan(args[1]);
+            }
         }
 
         return true;
@@ -160,6 +170,7 @@ public class hv_Command extends Command {
             tabCompletions.add("namecheck");
             tabCompletions.add("info");
             tabCompletions.add("add");
+            tabCompletions.add("remove");
             return tabCompletions;
         }
 
@@ -180,10 +191,19 @@ public class hv_Command extends Command {
                 return tabCompletions;
             }
 
+            if(arguments[0].equalsIgnoreCase("remove")) {
+                if(tabcompletion.spaces != 2) return Collections.emptyList();
+                for (String playerName : PrefixHandler.HVs.keySet()) {
+                    tabCompletions.add(playerName);
+                }
+                return tabCompletions;
+            }
+
             String list = "list";
             String namecheck = "namecheck";
             String info = "info";
             String add = "add";
+            String remove = "remove";
             if(list.startsWith(arguments[0].toLowerCase())){
                 if(tabcompletion.spaces > 1) return Collections.emptyList();
                 tabCompletions.add("list");
@@ -197,6 +217,9 @@ public class hv_Command extends Command {
             }
             if(add.startsWith(arguments[0].toLowerCase())){
                 tabCompletions.add("add");
+            }
+            if(remove.startsWith(arguments[0].toLowerCase())){
+                tabCompletions.add("remove");
             }
             return tabCompletions;
         }
@@ -223,8 +246,58 @@ public class hv_Command extends Command {
                 }
                 return tabCompletions;
             }
+            if(arguments[0].equalsIgnoreCase("remove")) {
+                if(tabcompletion.spaces != 2) return Collections.emptyList();
+                for (String playerName : PrefixHandler.HVs.keySet()) {
+                    if (playerName.toLowerCase().startsWith(arguments[1].toLowerCase())) {
+                        tabCompletions.add(playerName);
+                    }
+                }
+                return tabCompletions;
+            }
         }
         return Collections.emptyList();
+    }
+
+    private void displayUntil(HV_User user){
+        Duration d = user.getDuration();
+
+        if(d == null){
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.duration.permanent"));
+            return;
+        }
+
+        long days = d.toDays();
+        long hours = d.toHours() % 24;
+        long minutes = d.toMinutes() % 60;
+        long seconds = d.getSeconds() % 60;
+        long weeks = days / 7;
+        days = days % 7;
+
+        if(weeks > 0){
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.duration.weeks",
+                String.valueOf(weeks),String.valueOf(days),String.valueOf(hours),String.valueOf(minutes), String.valueOf(seconds)));
+            return;
+        }
+        if(days > 0){
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.duration.days",
+                String.valueOf(days),String.valueOf(hours),String.valueOf(minutes),String.valueOf(seconds)));
+            return;
+        }
+        if(hours > 0){
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.duration.hours",
+                String.valueOf(hours),String.valueOf(minutes),String.valueOf(seconds)));
+            return;
+        }
+        if(minutes > 0){
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.duration.minutes",
+                String.valueOf(minutes),String.valueOf(seconds)));
+            return;
+        }
+        if(seconds > 0){
+            displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.info.duration.seconds",
+                String.valueOf(seconds)));
+        }
     }
 
 }

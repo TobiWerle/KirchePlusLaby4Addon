@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -87,13 +88,15 @@ public class TabellenMethoden {
 
     public static void init() {
         Thread thread = new Thread(() -> {
-            File file = new File(System.getenv("APPDATA") + "/.minecraft/tokens/labymod");
+            File file = new File(KirchePlus.main.utils.getGameDir().getPath() + "/tokens/labymod");
+            //File file = new File(System.getenv("APPDATA") + "/.minecraft/tokens/labymod");
             if (!file.exists()) {
                 file.mkdirs();
             }
 
-            File credentialsFile = new File(
-                System.getenv("APPDATA") + "/.minecraft/tokens/labymod/StoredCredential");
+            File credentialsFile = new File(KirchePlus.main.utils.getGameDir().getPath() + "/tokens/labymod/StoredCredential");
+            //File credentialsFile = new File(System.getenv("APPDATA") + "/.minecraft/tokens/labymod/StoredCredential");
+
             InputStream credentials = TabellenMethoden.class.getResourceAsStream(
                 "/StoredCredential");
             if (!credentialsFile.exists()) {
@@ -119,8 +122,8 @@ public class TabellenMethoden {
     }
 
     public static void deleteOwn() {
-        File credentialsFile = new File(
-            System.getenv("APPDATA") + "/.minecraft/tokens/labymod/own/StoredCredential");
+        File credentialsFile = new File(KirchePlus.main.utils.getGameDir().getPath() + "/tokens/labymod/own/StoredCredential");
+        //File credentialsFile = new File(System.getenv("APPDATA") + "/.minecraft/tokens/labymod/own/StoredCredential");
         credentialsFile.delete();
     }
 
@@ -162,7 +165,6 @@ public class TabellenMethoden {
             }
         }
     }
-
     public static void getBrotList() throws IOException, GeneralSecurityException {
         PrefixHandler.BrotUser.clear();
         String range = "Brotliste!D6:F105";

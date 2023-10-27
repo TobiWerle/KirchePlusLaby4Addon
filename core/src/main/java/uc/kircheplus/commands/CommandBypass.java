@@ -22,7 +22,7 @@ public class CommandBypass {
                     String[] arguments = Arrays.copyOfRange(e.getMessage().split(" "), 1, e.getMessage().split(" ").length);
                     bypass = true;
                     KirchePlus.main.labyAPI().commandService().fireCommand(cmd, prefix, arguments);
-                    KirchePlus.main.utils.addMessageToChatHistory("/" + prefix + Utils.buildString(arguments));
+                    //KirchePlus.main.utils.addMessageToChatHistory("/" + prefix + " " +  Utils.buildString(arguments));
                     return;
                 }
             }

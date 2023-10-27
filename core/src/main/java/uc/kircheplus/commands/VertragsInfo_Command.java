@@ -134,6 +134,7 @@ public class VertragsInfo_Command extends Command {
                 System.out.println(name + contract);
                 new FactionContract(name, contract, conditions);
             }
+            aEquip.getFactionCondition("Mafia");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -167,7 +168,7 @@ public class VertragsInfo_Command extends Command {
         return null;
     }
 
-    public ArrayList<String> getFactions() {
+    public static ArrayList<String> getFactions() {
         ArrayList<String> list = new ArrayList<>();
         for (FactionContract faction : KirchePlus.main.factionContracts) {
             list.add(faction.getFaction());
