@@ -140,13 +140,27 @@
                     "when": "§8- §7Wann:§c %s",
                     "until": "§8- §7Bis:§c %s",
                     "weeks": "Wochen",
-                    "duration": "§8- §7Dauer:§c %s %s"
+                    "duration": {
+                        "permanent": "§8- §7Dauer:§c Permanent",
+                        "weeks": "§8- §7Dauer:§c %s Wochen %s Tage %s Stunden %s Minuten %s Sekunden",
+                        "days": "§8- §7Dauer:§c  %s Tage %s Stunden %s Minuten %s Sekunden",
+                        "hourns": "§8- §7Dauer:§c %s Stunden %s Minuten %s Sekunden",
+                        "minutes": "§8- §7Dauer:§c %s Minuten %s Sekunden",
+                        "seconds": "§8- §7Dauer:§c %s Sekunden"
+                    }
                 },
                 "add": {
                     "error": "§cDer Name darf nicht länger als 16 Zeichen lang sein!",
                     "nospace": "§c Es wurde nicht genug Platz in der Hausverbots-Tabelle gefunden!",
                     "success": "§aDas Hausverbot wurde eingetragen!",
                     "nopermissions": "§cDu hast keine Rechte auf die Hausverbots-Tabelle"
+                },
+                "remove" : {
+                    "queue": "§b Das Hausverbot wird entfernt...",
+                    "error": "§cDer Name darf nicht länger als 16 Zeichen lang sein!",
+                    "nopermissions": "§cDu hast keine Rechte auf die Hausverbots-Tabelle",
+                    "success": "§aDas Hausverbot wurde entfernt!",
+                    "playernotfound": "§cDieser Spieler hat kein Hausverbot!"
                 }
             },
             "saveactivty": {

@@ -120,4 +120,8 @@ public class VersionedUtils extends Utils {
         ImageIO.write(bufferedimage, "jpg", file2);
         return bufferedimage;
     }
+
+    public File getGameDir(){
+        return Minecraft.getMinecraft().gameDir;
+    }
 }

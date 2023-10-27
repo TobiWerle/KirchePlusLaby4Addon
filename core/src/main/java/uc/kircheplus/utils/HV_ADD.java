@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import uc.kircheplus.KirchePlus;
+import uc.kircheplus.events.PrefixHandler;
 
 public class HV_ADD {
 
@@ -61,6 +62,48 @@ public class HV_ADD {
                         KirchePlus.main.displayMessage(HV_prefix + " "+ Utils.translateAsString("kircheplusaddon.commands.hv.add.nopermissions"));
                     }
                 }
+            }
+        });
+        thread.start();
+    }
+    public static void deleteHouseBan(String playername) {
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    String range = "Hausverbote!B19:G92";
+                    int count = 0;
+                    ValueRange response = TabellenMethoden.sheetsService.spreadsheets().values().get(TabellenMethoden.SPREADSHEET_ID, range)
+                        .execute();
+                    List<List<Object>> values = response.getValues();
+
+                    for (List row : values) {
+                        if (row.get(0).equals(playername)) {
+                            List<Object> newvalues = Arrays.asList("", "", "", "", "", "");
+                            values.set(count, newvalues);
+                            ValueRange body = new ValueRange().setValues(values);
+                            UpdateValuesResponse result =
+                                TabellenMethoden.sheetsService.spreadsheets().values()
+                                    .update(TabellenMethoden.SPREADSHEET_ID, range, body)
+                                    .setValueInputOption("RAW").execute();
+                            PrefixHandler.HVs.remove(playername);
+                            KirchePlus.main.displayname.refreshAll();
+                            KirchePlus.main.displayMessage(HV_prefix + " "+ Utils.translateAsString("kircheplusaddon.commands.hv.remove.success"));
+                            return;
+                        }
+                        count++;
+                        if(values.size() == count){
+                            KirchePlus.main.displayMessage(HV_prefix + " "+ Utils.translateAsString("kircheplusaddon.commands.hv.remove.playernotfound"));
+                        }
+                    }
+                } catch (Exception e) {
+                    if (e.getMessage().contains("400 Bad Request")) {
+                        KirchePlus.main.displayMessage(HV_prefix + " "+ Utils.translateAsString("kircheplusaddon.commands.hv.remove.nopermissions"));
+                    }
+                }
+
             }
         });
         thread.start();

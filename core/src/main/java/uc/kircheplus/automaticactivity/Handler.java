@@ -137,7 +137,8 @@ public class Handler {
     }
 
     public static String screenshot(BufferedImage image) throws IOException {
-        File file = new File(System.getenv("APPDATA") + "/.minecraft/Kirche+/lastActivity.jpg");
+        File file = new File(KirchePlus.main.utils.getGameDir().getPath() + "/Kirche+/lastActivity.jpg");
+        //File file = new File(System.getenv("APPDATA") + "/.minecraft/Kirche+/lastActivity.jpg");
         ImageIO.write(addTextWatermark(image), "jpg", file);
 
         if (KirchePlus.main.configuration().uploadtype().get() == uploadTypes.KIRCHEPLUSIMG) {

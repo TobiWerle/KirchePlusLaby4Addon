@@ -2,6 +2,7 @@ package uc.kircheplus.utils;
 
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,6 +55,9 @@ public abstract class Utils {
     }
 
     public BufferedImage makeScreen() throws IOException {
+        return null;
+    }
+    public File getGameDir(){
         return null;
     }
     public static String translateAsString(String key, String... args){

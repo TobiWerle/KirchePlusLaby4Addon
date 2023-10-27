@@ -6,6 +6,8 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.Te
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
+import net.labymod.api.configuration.settings.Setting;
+import net.labymod.api.configuration.settings.annotation.SettingListener;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 
 @ConfigName("settings")
@@ -22,12 +24,10 @@ public class config extends AddonConfig {
     public final subDrinkConfig drink = new subDrinkConfig();
 
     @DropdownSetting
-    private final ConfigProperty<uploadTypes> uploadtype = new ConfigProperty<>(
-        uploadTypes.KIRCHEPLUSIMG);
+    private final ConfigProperty<uploadTypes> uploadtype = new ConfigProperty<>(uploadTypes.KIRCHEPLUSIMG);
 
     @SwitchSetting
     private final ConfigProperty<Boolean> owngmailenabled = new ConfigProperty<>(true);
-
     @TextFieldSetting
     private final ConfigProperty<String> kircheplustoken = new ConfigProperty<>("");
 
