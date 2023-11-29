@@ -5,20 +5,20 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
+import java.util.HashMap;
 import javax.net.ssl.SSLSocketFactory;
+import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.client.component.Component;
-import net.labymod.api.client.component.event.ClickEvent;
-import net.labymod.api.client.component.event.HoverEvent;
-import net.labymod.api.client.component.format.Style;
-import net.labymod.api.client.component.format.TextColor;
-import net.labymod.api.client.component.format.TextDecoration;
-import net.labymod.api.client.network.NetworkPlayerInfo;
 import net.labymod.api.reference.annotation.Referenceable;
 import net.labymod.api.util.I18n;
-import org.jetbrains.annotations.Unmodifiable;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import uc.kircheplus.KirchePlus;
+import uc.kircheplus.commands.aEquip;
 
 @Referenceable
 public abstract class Utils {
@@ -98,6 +98,54 @@ public abstract class Utils {
         resultArray[resultArray.length - 1] = toAdd;
 
         return resultArray;
+    }
+
+    public void sendCommandUsage(){
+        for(Command command : KirchePlus.main.commands) {
+            if (command.getPrefix().equals("aequip")) {
+                displayMessage("§3 ============="+ command.getPrefix() +"=============");
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.help.1"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.aequip.help.2"));
+            }else if (command.getPrefix().equals("aevent")) {
+                displayMessage("§3 ============="+ command.getPrefix() +"=============");
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.usage"));
+            }else if (command.getPrefix().equals("brot")) {
+                displayMessage("§3 ============="+ command.getPrefix() +"=============");
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.brot.help.main"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.brot.help.list"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.brot.help.info"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.brot.help.add"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.brot.help.help"));
+            }else if (command.getPrefix().equals("checkdonation")) {
+                displayMessage("§3 ============="+ command.getPrefix() +"=============");
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.checkdonation.help.1"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.checkdonation.help.2"));
+            }else if (command.getPrefix().equals("gdeinteilung")) {
+                displayMessage("§3 ============="+ command.getPrefix() +"=============");
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.gdeinteilung.help"));
+            }else if (command.getPrefix().equals("hv")) {
+                displayMessage("§3 ============="+ command.getPrefix() +"=============");
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.help.main"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.help.list"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.help.namecheck"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.help.info"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.hv.help.add"));
+            }else if (command.getPrefix().equals("topactivity")) {
+                displayMessage("§3 ============="+ command.getPrefix() +"=============");
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.topactivity.help"));
+            }else if (command.getPrefix().equals("vertragsinfo")) {
+                displayMessage("§3 ============="+ command.getPrefix() +"=============");
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.help.info"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.help.faction"));
+                displayMessage(Utils.translateAsString("kircheplusaddon.commands.contractinfo.help.main"));
+            }else if (command.getPrefix().equals("kircheplus")) {
+
+            }else if (command.getPrefix().equals("saveactivity")) {
+
+            }else{
+                displayMessage("Es wurde keine Hilfeseite für den Befehl " + command.getPrefix() + " gefunden!");
+            }
+        }
     }
 
 }

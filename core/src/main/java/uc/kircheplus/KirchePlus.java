@@ -3,7 +3,6 @@ package uc.kircheplus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.models.addon.annotation.AddonMain;
@@ -18,6 +17,7 @@ import uc.kircheplus.commands.aEquip;
 import uc.kircheplus.commands.aEvent_Command;
 import uc.kircheplus.commands.checkDonation_Command;
 import uc.kircheplus.commands.hv_Command;
+import uc.kircheplus.commands.kircheplus_command;
 import uc.kircheplus.commands.topActivity_Command;
 import uc.kircheplus.config.config;
 import uc.kircheplus.core.generated.DefaultReferenceStorage;
@@ -33,7 +33,6 @@ import uc.kircheplus.soundhandler.sounds;
 import uc.kircheplus.utils.Activity_User;
 import uc.kircheplus.utils.FactionContract;
 import uc.kircheplus.utils.GUIController;
-import uc.kircheplus.utils.HV_ADD;
 import uc.kircheplus.utils.SpenderInfo;
 import uc.kircheplus.utils.TabellenMethoden;
 import uc.kircheplus.utils.UpdateCheck;
@@ -47,7 +46,8 @@ public class KirchePlus extends LabyAddon<config> {
     //TODO TEST IT
 
     //todo done
-    //Duration at /hv info
+    // add /kircheplus -> Show all command usages
+    // Duration at /hv info
     // add /aequip give <Vertragspartner>
     // remove own at disable owngmail and init own gmail at enable
     // add /hv remove <Name>
@@ -58,7 +58,7 @@ public class KirchePlus extends LabyAddon<config> {
     // sort list at /brot list
 
     public static KirchePlus main;
-    public String VERSION = "3.4 pre beta 1";
+    public String VERSION = "3.4";
     public ArrayList<SpenderInfo> spender = new ArrayList<>();
     public HashMap<Activity_User, Integer> totalActivity = new HashMap<>();
     public ArrayList<FactionContract> factionContracts = new ArrayList<>();
@@ -67,7 +67,6 @@ public class KirchePlus extends LabyAddon<config> {
     /* Versioned Classes */
     public Displayname displayname;
     public GUIController guiController;
-
     public Utils utils;
     public ActivityGUI activityGUI;
     public GD_GUI gd_gui;
@@ -118,6 +117,7 @@ public class KirchePlus extends LabyAddon<config> {
         register(new Brot_Command());
         register(new topActivity_Command());
         register(new aEvent_Command());
+        register(new kircheplus_command());
     }
 
     private void register(Command cmd) {

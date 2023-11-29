@@ -1,23 +1,18 @@
 package uc.kircheplus.commands;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import net.labymod.api.Laby;
 import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.event.ClickEvent;
 import net.labymod.api.client.component.event.HoverEvent;
-import org.jetbrains.annotations.NotNull;
 import uc.kircheplus.KirchePlus;
 import uc.kircheplus.utils.Utils;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 
 public class aEvent_Command extends Command {
 
@@ -63,6 +58,8 @@ public class aEvent_Command extends Command {
                 KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.apiresponse.cooldown"));
             }else if(response.equals("not a member")){
                 KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.apiresponse.notamember"));
+            }else if(response.equals("time")){
+                KirchePlus.main.displayMessage(Utils.translateAsString("kircheplusaddon.commands.aevent.apiresponse.time"));
             }
         });
         thread.start();

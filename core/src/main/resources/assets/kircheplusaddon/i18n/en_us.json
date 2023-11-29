@@ -71,6 +71,10 @@
                 "error": {
                     "number": "§cBitte gib eine Zahl an, die nicht größer als 5 und nicht kleiner als 1 ist.",
                     "usage": "§8 - §b /aequip <Wasser/Brot/Suppe> {Anzahl}"
+                },
+                "help": {
+                    "1": "§8 - §b /aequip <Wasser/Brot/Suppe> {Anzahl} §8 -> §7Equipe dir automatisch Brot, Wasser oder Suppe.",
+                    "2": "§8 - §b /aequip give {Fraktion} §8 -> §7Equipe dir automatisch eine Ration."
                 }
             },
             "brot": {
@@ -113,7 +117,11 @@
                 "sync": "§7Die Donations werden geladen. Dies kann einige Zeit in anspruch nehmen!",
                 "inpublic": " §7-§6 %s §bSteht im Öffentlich-Channel :§6 %s §a(%s)",
                 "notpublic": " §7-§6 %s §amuss eingetragen werden :§6 %s",
-                "nodonation": "§cEs wurden keine Eintrage gefunden, die eingetragen werden müssen!"
+                "nodonation": "§cEs wurden keine Eintrage gefunden, die eingetragen werden müssen!",
+                "help": {
+                    "1": "§8- §b/checkdonations §8-> §7Gebe aus, wer alles in die Spenderliste eingetragen werden muss.",
+                    "2": "§8- §b/checkdonations updatenames §8-> §7Aktualisiere die Spielernamen in der Spenderliste."
+                }
             },
             "hv": {
                 "title": "§1[]§3========§7[§bHausverbot§7]§3========§1[]",
@@ -177,6 +185,7 @@
                 "unexpected": "§cEs ist ein unerwarteter Fehler aufgetreten!"
             },
             "topactivity": {
+                "help": "§8 - §b/topactivity §8-> §7Zeigt die top Aktivität an.",
                 "title": "§3=============Top-Aktivität=============",
                 "noactivitys": "§cKein Member hat bisher Aktivitäten eingetragen!",
                 "places": {
@@ -221,9 +230,13 @@
                     "event": "§cDas angegebene Event existiert nicht!",
                     "error": "§cEs ist ein unerwarteter Fehler aufgetreten!",
                     "cooldown": "§cDu kannst nur alle 10 Minuten ein Event ankündigen!",
-                    "notamember": "§cDu bist kein Member der Fraktion!"
+                    "notamember": "§cDu bist kein Member der Fraktion!",
+                    "time": "§cDie angegebene Zeit liegt in der Vergangenheit! Zeiten nach 00:00 Uhr sind erst ab 23 Uhr möglich!"
                 },
                 "sended": "§aDas Event §7%s §awurde im Discord angekündigt!"
+            },
+            "gdeinteilung": {
+                "help": "§8 - §b /gdeinteilung> §8 -> §7Öffne eine Oberfläche für die Aufgabenverteilung. (/gd, /gde, /einteilung"
             }
         },
         "activity": {

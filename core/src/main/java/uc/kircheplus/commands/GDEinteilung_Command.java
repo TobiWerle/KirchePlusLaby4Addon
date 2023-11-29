@@ -1,7 +1,6 @@
 package uc.kircheplus.commands;
 
 import net.labymod.api.client.chat.command.Command;
-import uc.kircheplus.KirchePlus;
 import uc.kircheplus.automaticactivity.Handler;
 
 public class GDEinteilung_Command extends Command {

@@ -1,12 +1,10 @@
 package uc.kircheplus.commands;
 
-import net.labymod.api.Laby;
+import java.util.Arrays;
 import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatMessageSendEvent;
 import uc.kircheplus.KirchePlus;
-import uc.kircheplus.utils.Utils;
-import java.util.Arrays;
 
 public class CommandBypass {
 
@@ -28,5 +26,4 @@ public class CommandBypass {
             }
         }
     }
-
 }

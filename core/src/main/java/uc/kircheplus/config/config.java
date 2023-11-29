@@ -6,8 +6,6 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.Te
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
-import net.labymod.api.configuration.settings.Setting;
-import net.labymod.api.configuration.settings.annotation.SettingListener;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 
 @ConfigName("settings")

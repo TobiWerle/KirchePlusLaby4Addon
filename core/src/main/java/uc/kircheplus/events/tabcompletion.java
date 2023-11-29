@@ -1,18 +1,15 @@
 package uc.kircheplus.events;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import net.labymod.api.Laby;
 import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.input.KeyEvent;
 import uc.kircheplus.KirchePlus;
-import uc.kircheplus.commands.CommandBypass;
-import uc.kircheplus.commands.hv_Command;
 import uc.kircheplus.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class tabcompletion {
     private final List<String> lastArguments = new ArrayList<>();
@@ -75,7 +72,7 @@ public class tabcompletion {
 
                                 if (commandArgs.size() == 1) {
                                     String guessArg = commandArgs.get(0);
-                                    Laby.references().chatExecutor().suggestCommand("/" + prefix + " " + Utils.buildString(withoutLast) + guessArg);
+                                    Laby.references().chatExecutor().suggestCommand("/" + prefix + " " + Utils.buildString(withoutLast) + guessArg.replaceAll("§[0-9A-FK-ORa-fk-or]", ""));
                                     sendGuesses(commandArgs, guessArg);
                                 } else {
                                     for (String arg : commandArgs) {
@@ -83,7 +80,7 @@ public class tabcompletion {
                                             lastArguments.clear();
                                         }
                                         if (!lastArguments.contains(arg)) {
-                                            Laby.references().chatExecutor().suggestCommand("/" + prefix + " " + Utils.buildString(withoutLast) + arg);
+                                            Laby.references().chatExecutor().suggestCommand("/" + prefix + " " + Utils.buildString(withoutLast) + arg.replaceAll("§[0-9A-FK-ORa-fk-or]", ""));
                                             sendGuesses(commandArgs, arg);
                                             lastArguments.add(arg);
                                             lastComplete = arg;
@@ -112,14 +109,14 @@ public class tabcompletion {
         int count = 0;
         while (count < commandArgs.size() - 1) {
             if (commandArgs.get(count).equals(guess)) {
-                builder.append("§a").append(commandArgs.get(count)).append("§7, ");
+                builder.append("§c").append(commandArgs.get(count)).append("§7, ");
             } else {
                 builder.append("§7").append(commandArgs.get(count)).append("§7, ");
             }
             count++;
         }
         if (commandArgs.get(count).equals(guess)) {
-            builder.append("§a").append(commandArgs.get(count));
+            builder.append("§c").append(commandArgs.get(count));
         } else {
             builder.append("§7").append(commandArgs.get(count));
         }

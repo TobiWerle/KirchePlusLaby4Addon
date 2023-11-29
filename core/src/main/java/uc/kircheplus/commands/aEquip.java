@@ -1,16 +1,15 @@
 package uc.kircheplus.commands;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import net.labymod.api.client.chat.command.Command;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import uc.kircheplus.KirchePlus;
-import uc.kircheplus.events.PrefixHandler;
 import uc.kircheplus.events.tabcompletion;
 import uc.kircheplus.utils.FactionContract;
 import uc.kircheplus.utils.Utils;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class aEquip extends Command {
 

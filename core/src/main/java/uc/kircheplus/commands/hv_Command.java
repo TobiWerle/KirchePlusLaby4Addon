@@ -10,10 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import net.labymod.api.Laby;
 import net.labymod.api.client.chat.command.Command;
-import org.checkerframework.checker.units.qual.Prefix;
 import uc.kircheplus.KirchePlus;
 import uc.kircheplus.automaticactivity.Handler;
-import uc.kircheplus.events.Displayname;
 import uc.kircheplus.events.PrefixHandler;
 import uc.kircheplus.events.tabcompletion;
 import uc.kircheplus.utils.HV_ADD;
@@ -177,8 +175,8 @@ public class hv_Command extends Command {
         if(arguments.length == 1){
             if(arguments[0].equalsIgnoreCase("info")) {
                 if(tabcompletion.spaces != 2) return Collections.emptyList();
-                for(String names : PrefixHandler.HVs.keySet()) {
-                    tabCompletions.add(names);
+                for(String playerName : PrefixHandler.HVs.keySet()) {
+                    tabCompletions.add(playerName);
                 }
                 return tabCompletions;
             }
